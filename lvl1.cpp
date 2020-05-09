@@ -39,20 +39,20 @@ class Graph{
             if (nextS-floor(nextS)>=0.5){
                 next.S=ceil(nextS);
             } else {
-                next.S=nextS;
+                next.S=floor(nextS);
             };
             if (nextI-floor(nextI)>=0.5){
                 next.I=ceil(nextI);
             } else {
-                next.I=nextI;
+                next.I=floor(nextI);
             };
             if (nextR-floor(nextR)>=0.5){
                 next.R=ceil(nextR);
             } else {
-                next.R=nextR;
+                next.R=floor(nextR);
             };
             //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
-            if (next.S<0){
+            if (next.S<=0){
                 next.I=N-next.R;
                 next.S=0;
             };
@@ -78,9 +78,9 @@ void printraw(std::vector<State> myGraph){ //must improve
 int main(){
     //definisco stato a t_0
     State t_0{};
-    t_0.S = 110;
+    t_0.S = 1000;
     t_0.I = 1;
-    Graph disease(t_0, 0.5, 0.8);
+    Graph disease(t_0, 0.3, 0.1);
     auto SRIgraph = disease.creategraph(100);
     printraw(SRIgraph);
   
