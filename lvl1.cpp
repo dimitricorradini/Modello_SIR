@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <cmath>
 
 struct State
 {
-    double S;
-    double R;
-    double I;
+    int S;
+    int R;
+    int I;
 };
 
 class Graph{
@@ -31,20 +32,32 @@ class Graph{
         for (int i=0; i!= sim_length; i++) {
             auto const& current = SRIgraph_.back();
             State next;
-            next.S=current.S-Beta_*current.I*current.S;
-            next.I=current.I+Beta_*current.I*current.S-Gamma_*current.I;
-            next.R=current.R+Gamma_*current.I;
+            double nextS=current.S-Beta_*current.I*current.S;
+            double nextI=current.I+Beta_*current.I*current.S-Gamma_*current.I;
+            double nextR=current.R+Gamma_*current.I;
+            if (nextS-floor(nextS)>=0.5){
+                next.S=ceil(nextS);
+            } else {
+                next.S=nextS;
+            };
+            if (nextI-floor(nextI)>=0.5){
+                next.I=ceil(nextI);
+            } else {
+                next.I=nextI;
+            };
+            if (nextR-floor(nextR)>=0.5){
+                next.R=ceil(nextR);
+            } else {
+                next.R=nextR;
+            };
             //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
             if (next.S<0){
                 next.I=N-next.R;
                 next.S=0;
             };
-            //assert(next.S+next.I+next.R == N); doesn't work because approximation
-            //how to treat doubles vs integers??
+            assert(next.S+next.I+next.R == N);
             SRIgraph_.push_back(next);
         }
-
-
         return SRIgraph_;
     };   
 };
@@ -71,4 +84,3 @@ int main(){
     printraw(SRIgraph);
   
 }
-
