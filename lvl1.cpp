@@ -35,6 +35,7 @@ class Graph{
             double nextS=current.S-Beta_*current.I*current.S;
             double nextI=current.I+Beta_*current.I*current.S-Gamma_*current.I;
             double nextR=current.R+Gamma_*current.I;
+            //appprossimo!
             if (nextS-floor(nextS)>=0.5){
                 next.S=ceil(nextS);
             } else {
