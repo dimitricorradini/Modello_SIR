@@ -4,16 +4,16 @@
 
 struct State
 {
-	double S;
-	double R;
-	double I;
+    double S;
+    double R;
+    double I;
 };
 
 class Graph{
 
-	State start_;
-	double Beta_;
-	double Gamma_;
+    State start_;
+    double Beta_;
+    double Gamma_;
     //else a State vector and an int
     public:
     
@@ -52,7 +52,7 @@ void printraw(std::vector<State> myGraph){
     int day = 1;
     	for (auto const& state : myGraph){
             std::cout << "Day "<< day << "\n";
-    		std::cout << "Number of susceptible people: " << state.S << "\n";
+    	    std::cout << "Number of susceptible people: " << state.S << "\n";
             std::cout << "Number of infected people: " << state.I << "\n";
             std::cout << "Number of recovered and/or dead people: " << state.R << "\n";
             day++;
