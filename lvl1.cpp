@@ -52,7 +52,7 @@ class Graph{
                 next.R=floor(nextR);
             };
             //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
-            if (next.S<=0){
+            if (next.S<=0){ //il segno uguale è per evitare che in casi di 0.5 decimale a entrambi 'nasca' dal nulla una persona
                 next.I=N-next.R;
                 next.S=0;
             };
