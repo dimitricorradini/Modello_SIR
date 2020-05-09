@@ -14,7 +14,7 @@ class Graph{
     State start_;
     double Beta_;
     double Gamma_;
-    //else a State vector and an int
+    //else a State vector and an int(?)
     public:
     
     Graph(State start, double Beta, double Gamma)
@@ -34,7 +34,7 @@ class Graph{
             next.S=current.S-Beta_*current.I*current.S;
             next.I=current.I+Beta_*current.I*current.S-Gamma_*current.I;
             next.R=current.R+Gamma_*current.I;
-            //what if the virus stops mid-way???
+            //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
             if (next.S<0){
                 next.I=N-next.R;
                 next.S=0;
@@ -48,7 +48,7 @@ class Graph{
         return SRIgraph_;
     };   
 };
-void printraw(std::vector<State> myGraph){
+void printraw(std::vector<State> myGraph){ //must improve
     int day = 1;
     	for (auto const& state : myGraph){
             std::cout << "Day "<< day << "\n";
