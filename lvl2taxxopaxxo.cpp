@@ -32,13 +32,13 @@ public:
     for (int i = 0; i != n_; i++) {
       std::cout << "| ";
       for (int j = 0; j != n_; j++) {
-        if (static_cast<State>(board_[i * n_ + j]) == State::Susc) {
+        if (board_[i * n_ + j] == State::Susc) {
           std::cout << "s ";
         }
-        if (static_cast<State>(board_[i * n_ + j]) == State::Inf) {
+        if (board_[i * n_ + j] == State::Inf) {
           std::cout << "I ";
         }
-        if (static_cast<State>(board_[i * n_ + j]) == State::Rec) {
+        if (board_[i * n_ + j] == State::Rec) {
           std::cout << "r ";
         }
       }
