@@ -24,7 +24,7 @@ public:
   }
   int size() const { return n_; }
   
-  void print() const {
+  void print1() const {//could be improved(?)
     for (int l = 0; l <= n_; ++l) {
       std::cout << " =";
     }
@@ -59,26 +59,29 @@ le celle che ha intorno, se ne trova una Susc e al contempo beta(il numero rando
 compreso tra 0 e 300(prob del 30%) allora cambia quella cella (l,m)(dell'intorno di (i,j))
 in una Inf sennò break.
 */
-Board evolve(Board const &current) {
+Board evolve(Board const &current, int const& beta, int const& gamma) {
+  //add exception for value of beta, gamma
   int n = current.size();
   Board next(n);
-  int r = 0;
-  int c = 0;
   for (int i = 0; i != n; i++) {
     for (int j = 0; j != n; j++) {
-      if (static_cast<State>(current(i, j)) == State::Susc &&
-          static_cast<State>(current(i, j)) == State::Rec) {
+      if (current(i, j) == State::Susc ||
+          current(i, j) == State::Rec) {
         break;
-      } else if (static_cast<State>(current(i, j)) == State::Inf) {
-        float beta = rand() % 1000;
-        if (beta >= 300 && beta < 400) {
-          static_cast<State>(next(i, j)) == State::Rec;
+      } else if (current(i, j) == State::Inf) {
+        //fix rand generation
+        int prob1 = rand() % 1000;
+        if (prob1 < gamma*1000) {
+          next(i, j) == State::Rec;
         } else {
+          //could be done differently but feels clearer creating a new prob
           for (int l = i - 1; l != i + 2; ++l) {
             for (int m = j - 1; m != j + 2; ++m) {
-              if (static_cast<State>(current(l, m)) == State::Susc &&
-                  beta < 300) {
-                static_cast<State>(next(l, m)) == State::Inf;
+              //fix rand generation
+              int prob2 = rand() % 1000;
+              if (current(l, m) == State::Susc &&
+                  prob2 < beta*1000) {
+                next(l, m) == State::Inf;
               } else {
                 break;
               }
@@ -95,12 +98,13 @@ int main() {
   int dim = 10;
   Board board(dim);
   board(1, 1) = State::Inf;
-  board.print();
+  board(1, 2) = State::Inf;
+  board.print1();
   std::this_thread::sleep_for(std::chrono::milliseconds(900));
   for (int i = 0; i != 5; ++i) {
     std::cout << "\033c";
-    board = evolve(board);
-    board.print();
+    board = evolve(board, 0.3, 0.4);
+    board.print1();
     std::this_thread::sleep_for(std::chrono::milliseconds(900));
   }
 }
