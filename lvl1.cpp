@@ -33,7 +33,6 @@ class Graph{
             auto const& current = SRIgraph_.back();
             State next;
             double nextS=current.S-Beta_*current.I*current.S;
-            //double nextI=current.I+Beta_*current.I*current.S-Gamma_*current.I;
             double nextR=current.R+Gamma_*current.I;
             //appprossimo!
             
@@ -49,7 +48,7 @@ class Graph{
                 next.R=floor(nextR);
             };
             
-            //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
+            //what if the virus stops mid-way???
             if (next.S<0){ 
                 next.S=0;
             };
