@@ -18,7 +18,7 @@ public:
     return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j]
                                                   : State::Susc;
   }
-  State &operator()(int i, int j) {
+  State& operator()(int i, int j) {
     assert(i >= 0 && i < n_ && j >= 0 && j < n_);
     return board_[i * n_ + j];
   }
