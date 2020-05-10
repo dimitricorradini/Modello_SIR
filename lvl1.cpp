@@ -33,35 +33,35 @@ class Graph{
             auto const& current = SRIgraph_.back();
             State next;
             double nextS=current.S-Beta_*current.I*current.S;
-            double nextI=current.I+Beta_*current.I*current.S-Gamma_*current.I;
+            //double nextI=current.I+Beta_*current.I*current.S-Gamma_*current.I;
             double nextR=current.R+Gamma_*current.I;
             //appprossimo!
-            if (nextS-floor(nextS)>=0.5){
+            
+            if (nextS-floor(nextS)>0.5){
                 next.S=ceil(nextS);
             } else {
                 next.S=floor(nextS);
             };
-            if (nextI-floor(nextI)>=0.5){
-                next.I=ceil(nextI);
-            } else {
-                next.I=floor(nextI);
-            };
+
             if (nextR-floor(nextR)>=0.5){
                 next.R=ceil(nextR);
             } else {
                 next.R=floor(nextR);
             };
+            
             //what if the virus stops mid-way??? Mi sa per questo veniva sottozero a te Tasso
-            if (next.S<=0){ //il segno uguale è per evitare che in casi di 0.5 decimale a entrambi 'nasca' dal nulla una persona
-                next.I=N-next.R;
+            if (next.S<0){ 
                 next.S=0;
             };
-            assert(next.S+next.I+next.R == N);
+            
+            next.I=N-next.R-next.S;           
+            assert(next.S+next.I+next.R == N);      
             SRIgraph_.push_back(next);
         }
         return SRIgraph_;
     };   
 };
+
 void printraw(std::vector<State> myGraph){ //must improve
     int day = 1;
     	for (auto const& state : myGraph){
