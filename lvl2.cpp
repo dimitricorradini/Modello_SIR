@@ -121,7 +121,7 @@ int main() {
     board.print1();
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     if (board.infnum()==0){
-      std::cout<<"The virus is gone"<<"\n";
+      std::cout<<"The virus is gone\n";
       return 0;
     }
   }
