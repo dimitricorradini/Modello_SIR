@@ -115,7 +115,7 @@ int main() {
   board(1, 2) = State::Inf;
   board.print1();
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  for (int i = 0; i != 100; ++i) {
+  while (true) {
     std::cout << "\033c";
     board = evolve(board, 0.5, 0.2);
     board.print1();
