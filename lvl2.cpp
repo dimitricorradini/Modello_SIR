@@ -57,15 +57,13 @@ public:
     std::cout << "Susceptible = " << n_-I-R;
     std::cout << "Infected = " << I;
     std::cout << "Recovered = "<< R;
-    //a stopper
-    if (I==0) {return 0;}
   }
 };
 
 
 Board evolve(Board const &current, double const& beta, double const& gamma) {
   //add exception for value of beta, gamma
-  if (Beta>1||Gamma>1||Beta<0||Gamma<0) {
+  if (beta>1||gamma>1||beta<0||gamma<0) {
     throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"}; 
   };
   int n = current.size();
