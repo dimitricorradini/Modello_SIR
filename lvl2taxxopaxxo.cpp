@@ -1,5 +1,6 @@
 #include <cassert>
 #include <chrono>
+#include <ctime>
 #include <cstdlib>
 #include <iostream>
 #include <thread>
@@ -59,34 +60,35 @@ le celle che ha intorno, se ne trova una Susc e al contempo beta(il numero rando
 compreso tra 0 e 300(prob del 30%) allora cambia quella cella (l,m)(dell'intorno di (i,j))
 in una Inf sennò break.
 */
-Board evolve(Board const &current, int const& beta, int const& gamma) {
+Board evolve(Board const &current, double const& beta, double const& gamma) {
   //add exception for value of beta, gamma
+  if (Beta>1||Gamma>1||Beta<0||Gamma<0) {
+    throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"}; 
+  };
   int n = current.size();
   Board next(n);
+  //seed for random generation
+  srand(time(NULL));
   for (int i = 0; i != n; i++) {
     for (int j = 0; j != n; j++) {
-      if (current(i, j) == State::Susc ||
-          current(i, j) == State::Rec) {
-        break;
-      } else if (current(i, j) == State::Inf) {
-        //fix rand generation
+      if (current(i, j) == State::Inf) {
         int prob1 = rand() % 1000;
-        if (prob1 < gamma*1000) {
-          next(i, j) == State::Rec;
+        if (prob1 < (gamma*1000)) {
+          next(i, j) = State::Rec;
         } else {
-          //could be done differently but feels clearer creating a new prob
+          next(i, j) = State::Inf;
           for (int l = i - 1; l != i + 2; ++l) {
             for (int m = j - 1; m != j + 2; ++m) {
-              //fix rand generation
-              int prob2 = rand() % 1000;
-              if (current(l, m) == State::Susc &&
-                  prob2 < beta*1000) {
-                next(l, m) == State::Inf;
-              } else {
-                break;
+              int prob2 = rand()%1000;
+              if (current(l, m) == State::Susc && prob2 < beta*1000) {
+                next(l, m) = State::Inf;
               }
             }
           }
+        }
+      } else {
+        if (next(i,j)!=State::Inf){
+          next(i,j)=current(i,j);
         }
       }
     }
@@ -95,16 +97,16 @@ Board evolve(Board const &current, int const& beta, int const& gamma) {
 }
 
 int main() {
-  int dim = 10;
+  int dim = 20;
   Board board(dim);
   board(1, 1) = State::Inf;
   board(1, 2) = State::Inf;
   board.print1();
-  std::this_thread::sleep_for(std::chrono::milliseconds(900));
-  for (int i = 0; i != 5; ++i) {
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  for (int i = 0; i != 100; ++i) {
     std::cout << "\033c";
     board = evolve(board, 0.3, 0.4);
     board.print1();
-    std::this_thread::sleep_for(std::chrono::milliseconds(900));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
 }
