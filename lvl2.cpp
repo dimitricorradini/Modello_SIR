@@ -10,10 +10,12 @@ enum class State { Susc, Inf, Rec };
 
 class Board {
   int n_;
+  int i_stopper;
+  //weird way to avoid making you wait
   std::vector<State> board_;
 
 public:
-  Board(int n) : n_(n), board_(n * n) {}
+  Board(int n) : n_(n), board_(n * n){}
 
   State operator()(int i, int j) const {
     return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j]
@@ -24,9 +26,10 @@ public:
     return board_[i * n_ + j];
   }
   int size() const { return n_; }
+
+  int infnum() const {return i_stopper;}
   
-  
-  void print1() const {//could be improved(?)
+  void print1() /*const*/ {//could be improved(?)
     int I = 0;
     int R = 0;
     for (int l = 0; l <= n_; ++l) {
@@ -54,9 +57,13 @@ public:
       std::cout << " =";
     }
     std::cout << "\n";
-    std::cout << "Susceptible = " << n_-I-R;
-    std::cout << "Infected = " << I;
-    std::cout << "Recovered = "<< R;
+    //We want to have numbers
+    std::cout << "Susceptible = " << (n_*n_)-I-R << "\n";
+    std::cout << "Infected = " << I << "\n";
+    std::cout << "Recovered = "<< R << "\n";
+    //we can use those to stop program if need be
+    i_stopper = I;
+
   }
 };
 
@@ -64,7 +71,7 @@ public:
 Board evolve(Board const &current, double const& beta, double const& gamma) {
   //add exception for value of beta, gamma
   if (beta>1||gamma>1||beta<0||gamma<0) {
-    throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"}; 
+    throw std::runtime_error("Coefficients Beta and Gamma must be between 0 and 1"); 
   };
   int n = current.size();
   Board next(n);
@@ -110,8 +117,12 @@ int main() {
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   for (int i = 0; i != 100; ++i) {
     std::cout << "\033c";
-    board = evolve(board, 0.3, 0.4);
+    board = evolve(board, 0.5, 0.2);
     board.print1();
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    if (board.infnum()==0){
+      std::cout<<"The virus is gone"<<"\n";
+      return 0;
+    }
   }
 }
