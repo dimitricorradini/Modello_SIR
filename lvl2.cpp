@@ -27,8 +27,8 @@ public:
   
   
   void print1() const {//could be improved(?)
-    int I = 0
-    int R = 0
+    int I = 0;
+    int R = 0;
     for (int l = 0; l <= n_; ++l) {
       std::cout << " =";
     }
@@ -69,7 +69,6 @@ Board evolve(Board const &current, double const& beta, double const& gamma) {
     throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"}; 
   };
   int n = current.size();
-  int I =
   Board next(n);
   //seed for random generation
   srand(time(NULL));
