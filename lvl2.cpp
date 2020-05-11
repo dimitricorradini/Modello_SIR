@@ -29,7 +29,7 @@ public:
 
   int infnum() const {return i_stopper;}
   
-  void print1() /*const*/ {//could be improved(?)
+  void print1() {//could be improved(?)
     int I = 0;
     int R = 0;
     for (int l = 0; l <= n_; ++l) {
