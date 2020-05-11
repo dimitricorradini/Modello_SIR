@@ -41,11 +41,11 @@ public:
         }
         if (board_[i * n_ + j] == State::Inf) {
           std::cout << "I ";
-          I++
+          I++;
         }
         if (board_[i * n_ + j] == State::Rec) {
           std::cout << "r ";
-          R++
+          R++;
         }
       }
       std::cout << "|\n";
