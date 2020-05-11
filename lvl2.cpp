@@ -25,7 +25,10 @@ public:
   }
   int size() const { return n_; }
   
+  
   void print1() const {//could be improved(?)
+    int I = 0
+    int R = 0
     for (int l = 0; l <= n_; ++l) {
       std::cout << " =";
     }
@@ -38,9 +41,11 @@ public:
         }
         if (board_[i * n_ + j] == State::Inf) {
           std::cout << "I ";
+          I++
         }
         if (board_[i * n_ + j] == State::Rec) {
           std::cout << "r ";
+          R++
         }
       }
       std::cout << "|\n";
@@ -48,7 +53,12 @@ public:
     for (int l = 0; l <= n_; ++l) {
       std::cout << " =";
     }
-    std::cout << '\n';
+    std::cout << "\n";
+    std::cout << "Susceptible = " << n_-I-R;
+    std::cout << "Infected = " << I;
+    std::cout << "Recovered = "<< R;
+    //a stopper
+    if (I==0) {return 0;}
   }
 };
 
@@ -59,6 +69,7 @@ Board evolve(Board const &current, double const& beta, double const& gamma) {
     throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"}; 
   };
   int n = current.size();
+  int I =
   Board next(n);
   //seed for random generation
   srand(time(NULL));
