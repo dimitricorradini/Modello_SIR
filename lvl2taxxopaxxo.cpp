@@ -51,15 +51,8 @@ public:
     std::cout << '\n';
   }
 };
-/*
-qui ho pensato di far leggere ogni cella della griglia con dei cicli for per vedere lo
-stato di ogni cella, se è Susc o Rec non fa nulla, se è inf genera un numero random tra 
-0 e 1000, se il numero è compeso tra 300 e 400(per avere una probabilità del 10%) allora 
-cambia lo stato della cella in rec, altrimenti parte un altro ciclo for per controllare 
-le celle che ha intorno, se ne trova una Susc e al contempo beta(il numero random) è 
-compreso tra 0 e 300(prob del 30%) allora cambia quella cella (l,m)(dell'intorno di (i,j))
-in una Inf sennò break.
-*/
+
+
 Board evolve(Board const &current, double const& beta, double const& gamma) {
   //add exception for value of beta, gamma
   if (Beta>1||Gamma>1||Beta<0||Gamma<0) {
@@ -69,25 +62,29 @@ Board evolve(Board const &current, double const& beta, double const& gamma) {
   Board next(n);
   //seed for random generation
   srand(time(NULL));
+  //cycle on matrix
   for (int i = 0; i != n; i++) {
     for (int j = 0; j != n; j++) {
       if (current(i, j) == State::Inf) {
         int prob1 = rand() % 1000;
         if (prob1 < (gamma*1000)) {
+          //recovery/death
           next(i, j) = State::Rec;
         } else {
           next(i, j) = State::Inf;
+          //cycle on neighbors
           for (int l = i - 1; l != i + 2; ++l) {
             for (int m = j - 1; m != j + 2; ++m) {
               int prob2 = rand()%1000;
               if (current(l, m) == State::Susc && prob2 < beta*1000) {
+                //infection!
                 next(l, m) = State::Inf;
               }
             }
           }
         }
       } else {
-        if (next(i,j)!=State::Inf){
+        if (next(i,j)!=State::Inf){//non può disinfettarsi in automatico!
           next(i,j)=current(i,j);
         }
       }
