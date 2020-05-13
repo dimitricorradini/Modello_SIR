@@ -236,10 +236,10 @@ class Display{
   int draw(Board const &board) {
  
     const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
+    int delay = 100;
   /*const int width = board.size();
   const int height = width;
   const int n_cells = width * height;
-  int delay = 100;
   bool redraw = true;
   const float fps = 1.0f;
 
