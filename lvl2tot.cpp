@@ -17,7 +17,6 @@ enum class State { Susc, Inf, Rec };
 class Board {
   int n_;
   std::vector<State> board_;
-
 public:
   Board(int n) : n_(n), board_(n * n) {}
 
@@ -122,8 +121,29 @@ int countR(Board const &board) {
   }
   return r;
 }
+}
 
-int Graph(Board const &board) {
+struct <data_by_day>{  
+  int S_;
+  int I_;
+  int R_;
+}
+
+class Graph {
+  std::vector<data_by_day> graphdata
+  static constexpr int heightG = 500;
+  static constexpr int widthG = 700;
+  
+  public:
+  void update(board){
+    data_by_day today_data;
+    today.S_=board.countS();
+    today.R_=board.countR();
+    today.I=board.size()-board.countS()-board.countR();
+    graphdata.push_back(today_data);
+  };
+  
+  void draw(){//fix this!
   const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 3);
   const sf::Vector2f dimYaxis = sf::Vector2f(3, heightG);
 
@@ -236,7 +256,6 @@ class Display{
   int draw(Board const &board) {
  
     const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
-    int delay = 100;
   /*const int width = board.size();
   const int height = width;
   const int n_cells = width * height;
@@ -276,8 +295,7 @@ class Display{
 
     m_window.display();
    //window.clear(sf::Color::White);
-    sf::sleep(sf::milliseconds(delay));
-    //std::cout << "\033c";
+   //std::cout << "\033c";
   }
   return 0;
 }
@@ -290,15 +308,17 @@ int main() {
   board(4, 5) = State::Inf;
   board(11, 16) = State::Inf;
   board(5, 19) = State::Inf;
-  // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   Display display(dim)
+  Graph graph;
   display.draw(board);
-  Graph(board);
+  graph.update(board);
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   for (int i = 0; i != 3; ++i) {
     board = evolve(board, 0.3, 0.4);
     display.draw(board);
-    Graph(board);
-    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    graph.update(board);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
   }
+  graph.draw();
 }
