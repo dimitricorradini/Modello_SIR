@@ -9,22 +9,23 @@
 
 enum class State { Susc, Inf, Rec };
 
-class Board {
+class Board 
+{
   int n_;
   std::vector<State> board_;
 
-public:
+  public:
   Board(int n) : n_(n), board_(n * n) {}
 
   State operator()(int i, int j) const {
-    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j]
-                                                  : State::Rec;
+    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j] : State::Rec;
   }
-  State &operator()(int i, int j) {
+
+  State& operator()(int i, int j) {
     assert(i >= 0 && i < n_ && j >= 0 && j < n_);
     return board_[i * n_ + j];
   }
-  // bool operator!() {return !board_(n_);}
+
   int size() const { return n_; }
 };
 

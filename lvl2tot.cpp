@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cassert>
 #include <chrono>
-#include <cstdlib>
+#include <random>
 #include <ctime>
 #include <iostream>
 #include <thread>
@@ -10,62 +10,68 @@
 
 constexpr int heightG = 500;
 constexpr int widthG = 700;
-int day=50;
+int day = 50;
 
 enum class State { Susc, Inf, Rec };
 
-class Board {
+class Board 
+{
+  private:
+
   int n_;
   std::vector<State> board_;
-public:
+
+  public:
+
   Board(int n) : n_(n), board_(n * n) {}
 
   State operator()(int i, int j) const {
-    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j]
-                                                  : State::Rec;
+    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j] : State::Rec;
   }
-  State &operator()(int i, int j) {
+
+  State& operator()(int i, int j) {
     assert(i >= 0 && i < n_ && j >= 0 && j < n_);
     return board_[i * n_ + j];
   }
-  // bool operator!() {return !board_(n_);}
+
   int size() const { return n_; }
 };
 
-Board evolve(Board const &current, double const &beta, double const &gamma) {
+Board evolve(Board const& current, double const beta, double const gamma) {
   // add exception for value of beta, gamma
   if (beta > 1 || gamma > 1 || beta < 0 || gamma < 0) {
-    throw std::runtime_error{
-        "Coefficients Beta and Gamma must be between 0 and 1"};
-  };
+    throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"};
+  }
+
   int n = current.size();
   Board next(n);
-  // seed for random generation
-  srand(time(NULL));
-  // cycle on matrix
-  for (int i = 0; i != n; i++) {
-    for (int j = 0; j != n; j++) {
+  //seed for random generation
+  std::mt19937 gen{std::random_device{}()};
+  std::uniform_real_distribution<double> dist{0, 1};
+  //cycle on matrix
+  for (int i = 0; i != n; ++i) {
+    for (int j = 0; j != n; ++j) {
       if (current(i, j) == State::Inf) {
-        int prob1 = rand() % 1000;
-        if (prob1 < (gamma * 1000)) {
-          // recovery/death
+        double prob1 = dist(gen);
+        if (prob1 < gamma) {
+          //recovery/death
           next(i, j) = State::Rec;
         } else {
           next(i, j) = State::Inf;
-          // cycle on neighbors
-          for (int l = i - 1; l != i + 2; ++l) {
-            for (int m = j - 1; m != j + 2; ++m) {
-              int prob2 = rand() % 1000;
-              if (current(l, m) == State::Susc && prob2 < beta * 1000) {
-                // infection!
+          //cycle on neighbors
+          for (int l = i - 1; l <= i + 1; ++l) {
+            for (int m = j - 1; m <= j + 1; ++m) {
+              double prob2 = dist(gen);
+              if (current(l, m) == State::Susc && prob2 < beta) {
+                //infection!
                 next(l, m) = State::Inf;
               }
             }
           }
         }
       } else {
-        if (next(i, j) != State::Inf) { // non può disinfettarsi in automatico
-          next(i, j) = current(i, j);
+        if (next(i,j)!=State::Inf){//non può disinfettarsi in automatico!
+          next(i,j)=current(i,j);
         }
       }
     }
@@ -120,7 +126,6 @@ int countR(Board const &board) {
     };
   }
   return r;
-}
 }
 
 struct State{  
