@@ -291,11 +291,12 @@ int main() {
   board(11, 16) = State::Inf;
   board(5, 19) = State::Inf;
   // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  draw(board);
+  Display display(dim)
+  display.draw(board);
   Graph(board);
   for (int i = 0; i != 3; ++i) {
     board = evolve(board, 0.3, 0.4);
-    draw(board);
+    display.draw(board);
     Graph(board);
     // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
