@@ -182,11 +182,61 @@ int Graph(Board const &board) {
   }
   return 0;
 }
+};
 
-int draw(Board const &board) {
-  const int cell_size = 6;
-  const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
-  const int width = board.size();
+class Display{
+  
+  int m_board_side;
+  sf::RenderWindow m_window;
+  
+  static constexpr int cell_size = 10;
+
+  static int display_side(int board_side){
+    
+    return board_side * cell_size;
+
+  }
+
+  static constexpr auto s_window_title = "Virus simulation";
+
+  public:
+  
+  Display(int board_side)
+    : m_board_side{board_side}
+    , m_window{
+      sf::VideoMode(display_side(board_side), display_side(board_side)),
+      s_window_title,
+      sf::Style::Close}
+    {
+    }
+
+   //while (window.isOpen()) {
+    /* if (clock.getElapsedTime().asSeconds() >= fps) {
+       redraw = true;
+       clock.restart();
+         };*/
+
+    /*sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      };
+    }*/
+
+  void wait_key_pressed()
+    {
+      sf::Event event;
+
+      m_window.waitEvent(event);
+      while (event.type != sf::Event::KeyPressed) {
+        m_window.waitEvent(event);
+      }
+    }
+
+  int draw(Board const &board) {
+ 
+    const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
+  /*const int width = board.size();
   const int height = width;
   const int n_cells = width * height;
   int delay = 100;
@@ -197,29 +247,20 @@ int draw(Board const &board) {
                           "Covid");
   /*window.setFramerateLimit(fps);
   sf::Clock clock;*/
+    sf::RectangleShape cell(cell_vector);
+    cell.setOutlineThickness(1);
+    cell.setOutlineColor(sf::Color::Black);
 
-  while (window.isOpen()) {
-    /* if (clock.getElapsedTime().asSeconds() >= fps) {
-       redraw = true;
-       clock.restart();
-         };*/
-
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
-        window.close();
-      };
-    }
-
-    window.clear(sf::Color::White);
+  
+    m_window.clear(sf::Color::White);
 
     for (int i = 0; i != width; ++i) {
       for (int j = 0; j != height; ++j) {
-        sf::RectangleShape cell;
+        //sf::RectangleShape cell;
         cell.setPosition(i * cell_size, j * cell_size);
-        cell.setSize(cell_vector);
-        cell.setOutlineThickness(1);
-        cell.setOutlineColor(sf::Color::Black);
+        //cell.setSize(cell_vector);
+        //cell.setOutlineThickness(1);
+        //cell.setOutlineColor(sf::Color::Black);
         if (board(i, j) == State::Susc) {
           cell.setFillColor(sf::Color::Blue);
         }
@@ -229,14 +270,14 @@ int draw(Board const &board) {
         if (board(i, j) == State::Rec) {
           cell.setFillColor(sf::Color::Green);
         }
-        window.draw(cell);
+        m_window.draw(cell);
       }
     }
 
-    window.display();
-    window.clear(sf::Color::White);
+    m_window.display();
+   //window.clear(sf::Color::White);
     sf::sleep(sf::milliseconds(delay));
-    std::cout << "\033c";
+    //std::cout << "\033c";
   }
   return 0;
 }
@@ -250,16 +291,13 @@ int main() {
   board(11, 16) = State::Inf;
   board(5, 19) = State::Inf;
   // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  draw(board);
+  Graph(board);
   for (int i = 0; i != 3; ++i) {
-    // std::cout << "\033c";
-    if (i == 0) {
-      draw(board);
-      Graph(board);
-    } else {
-      board = evolve(board, 0.3, 0.4);
-      draw(board);
-      Graph(board);
-      // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    }
+    board = evolve(board, 0.3, 0.4);
+    draw(board);
+    Graph(board);
+    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
   }
 }
