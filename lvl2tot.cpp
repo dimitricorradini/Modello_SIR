@@ -6,6 +6,11 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <cmath>
+
+constexpr int heightG = 500;
+constexpr int widthG = 700;
+int day=50;
 
 enum class State { Susc, Inf, Rec };
 
@@ -69,17 +74,43 @@ Board evolve(Board const &current, double const &beta, double const &gamma) {
   return next;
 }
 
-int countS(Board const &board) {
-  int s = 0;
-  for (int l = 1; l <= board.size(); ++l) {
-    for (int j = 1; j <= board.size(); ++j) {
-      if (board(l, j) == State::Susc) {
-        ++s;
-      };
+int count(State const& state,Board const& board) {
+  int c=heightG-50;
+  State x;
+  if(pow(board.size(),2)==heightG-80) {
+    for (int i = 0; i != board.size(); i++) {
+      for (int j = 0; j != board.size(); j++) {
+        x = board(i, j);
+        if (x== state) {
+          --c;
+        }
+      }
     }
   }
-  return s;
+  if(pow(board.size(),2)<heightG-80) {
+    for (int i = 0; i != board.size(); i++) {
+      for (int j = 0; j != board.size(); j++) {
+        x = board(i, j);
+        if (x== state) {
+          c=-floor((heightG-80)/pow(board.size(),2));
+        }
+      }
+    }
+  }
+    if(pow(board.size(),2)>heightG-80) {
+    for (int i = 0; i != board.size(); i++) {
+      for (int j = 0; j != board.size(); j++) {
+        x = board(i, j);
+        if (x== state) {
+          c=-(pow(board.size(),2)/(heightG-80));
+        }
+      }
+    }
+    c=floor(c);
+  }
+  return c;
 }
+
 int countR(Board const &board) {
   int r = 0;
   for (int l = 1; l <= board.size(); ++l) {
@@ -91,24 +122,12 @@ int countR(Board const &board) {
   }
   return r;
 }
-int countI(Board const &board) {
-  int i = 0;
-  for (int l = 1; l <= board.size(); ++l) {
-    for (int j = 1; j <= board.size(); ++j) {
-      if (board(l, j) == State::Rec) {
-        ++i;
-      };
-    };
-  }
-  return i;
-}
 
-Board Graph(Board const &board) {
-  int day = 0;
-  const sf::Vector2f dimXaxis = sf::Vector2f(400, 5);
-  const sf::Vector2f dimYaxis = sf::Vector2f(5, 400);
+int Graph(Board const &board) {
+  const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 3);
+  const sf::Vector2f dimYaxis = sf::Vector2f(3, heightG);
 
-  sf::RenderWindow graph(sf::VideoMode(400, 400), "Covid-19");
+  sf::RenderWindow graph(sf::VideoMode(widthG, heightG), "Covid-19");
 
   while (graph.isOpen()) {
 
@@ -124,7 +143,7 @@ Board Graph(Board const &board) {
     graph.clear(sf::Color::White);
 
     sf::RectangleShape Xaxis;
-    Xaxis.setPosition(0, 50);
+    Xaxis.setPosition(0, heightG - 50);
     Xaxis.setSize(dimXaxis);
     Xaxis.setFillColor(sf::Color::Black);
     sf::RectangleShape Yaxis;
@@ -134,30 +153,38 @@ Board Graph(Board const &board) {
 
     graph.draw(Xaxis);
     graph.draw(Yaxis);
+    
+    sf::Vector2f coordS = sf::Vector2f(day, count(State::Susc,board));
+    sf::Vector2f coordR = sf::Vector2f(day, count(State::Rec,board));
+    sf::Vector2f coordI = sf::Vector2f(day, count(State::Inf,board));
+      
+    sf::VertexArray curveS(sf::PrimitiveType::LineStrip, 0);
+    sf::VertexArray curveR(sf::PrimitiveType::LineStrip, 0);
+    sf::VertexArray curveI(sf::PrimitiveType::LineStrip, 0);
+    /*
+    while(countR(board)!=pow(board.size(),2)) {
+      day+=15;
+      curveS.append(sf::Vertex(sf::Vector2f(day, count(State::Susc,board))));
+      curveR.append(sf::Vertex(sf::Vector2f(day, count(State::Rec,board))));
+      curveI.append(sf::Vertex(sf::Vector2f(day, count(State::Inf,board))));
+*/
+      curveS.append(sf::Vertex(sf::Vector2f(day, count(State::Susc,board))));
+      curveR.append(sf::Vertex(sf::Vector2f(day, count(State::Rec,board))));
+      curveI.append(sf::Vertex(sf::Vector2f(day, count(State::Inf,board))));
+   // }
 
-    sf::Vector2f coordS = sf::Vector2f(day, countS(board));
-    sf::Vector2f coordR = sf::Vector2f(day, countR(board));
-    sf::Vector2f coordI = sf::Vector2f(day, countI(board));
-    sf::VertexArray curveS(sf::PrimitiveType::LineStrip, 100);
-    sf::VertexArray curveR(sf::PrimitiveType::LineStrip, 100);
-    sf::VertexArray curveI(sf::PrimitiveType::LineStrip, 100);
+    graph.draw(curveS);
+    graph.draw(curveR);
+    graph.draw(curveI);
 
-    while (countR(board) != board.size() * board.size()) {
-      curveS.append(sf::Vertex(sf::Vector2f(day, countS(board))));
-      curveR.append(sf::Vertex(sf::Vector2f(day, countR(board))));
-      curveI.append(sf::Vertex(sf::Vector2f(day, countI(board))));
-      graph.draw(curveS);
-      graph.draw(curveR);
-      graph.draw(curveI);
-    }
     graph.display();
     graph.clear(sf::Color::White);
   }
   return 0;
 }
 
-Board draw(Board const &board) {
-  const int cell_size = 15;
+int draw(Board const &board) {
+  const int cell_size = 6;
   const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
   const int width = board.size();
   const int height = width;
@@ -205,16 +232,17 @@ Board draw(Board const &board) {
         window.draw(cell);
       }
     }
-    window.display();
-    // sf::sleep(sf::milliseconds(delay));
-    window.clear(sf::Color::White);
-  }
 
+    window.display();
+    window.clear(sf::Color::White);
+    sf::sleep(sf::milliseconds(delay));
+    std::cout << "\033c";
+  }
   return 0;
 }
 
 int main() {
-  int dim = 20;
+  int dim = 50;
   Board board(dim);
   board(1, 1) = State::Inf;
   board(1, 2) = State::Inf;
@@ -225,11 +253,11 @@ int main() {
   for (int i = 0; i != 3; ++i) {
     // std::cout << "\033c";
     if (i == 0) {
-      // draw(board);
+      draw(board);
       Graph(board);
     } else {
       board = evolve(board, 0.3, 0.4);
-      // draw(board);
+      draw(board);
       Graph(board);
       // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
