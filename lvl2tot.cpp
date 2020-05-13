@@ -123,14 +123,14 @@ int countR(Board const &board) {
 }
 }
 
-struct <data_by_day>{  
+struct State{  
   int S_;
   int I_;
   int R_;
 }
 
 class Graph {
-  std::vector<data_by_day> graphdata
+  std::vector<State> graphdata
   static constexpr int heightG = 500;
   static constexpr int widthG = 700;
   
