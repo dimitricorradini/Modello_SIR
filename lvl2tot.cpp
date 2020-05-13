@@ -64,7 +64,7 @@ Board evolve(Board const &current, double const &beta, double const &gamma) {
           }
         }
       } else {
-        if (next(i, j) != State::Inf) { // non può disinfettarsi in automatico!
+        if (next(i, j) != State::Inf) { // non può disinfettarsi in automatico
           next(i, j) = current(i, j);
         }
       }
