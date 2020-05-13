@@ -1,10 +1,10 @@
 #include <cassert>
 #include <chrono>
 #include <ctime>
-#include <cstdlib>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <random>
 
 enum class State { Susc, Inf, Rec };
 
@@ -18,20 +18,23 @@ public:
   Board(int n) : n_(n), board_(n * n){}
 
   State operator()(int i, int j) const {
-    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j]
-                                                  : State::Rec;
+    return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j] : State::Rec;
   }
+
   State& operator()(int i, int j) {
     assert(i >= 0 && i < n_ && j >= 0 && j < n_);
     return board_[i * n_ + j];
   }
+
   int size() const { return n_; }
 
-  int infnum() const {return i_stopper;}
+  int infnum() const { return i_stopper; }
   
-  void print1() {//could be improved(?)
+  void print1()
+  {
     int I = 0;
     int R = 0;
+
     for (int l = 0; l <= n_; ++l) {
       std::cout << " =";
     }
@@ -57,41 +60,42 @@ public:
       std::cout << " =";
     }
     std::cout << "\n";
-    //We want to have numbers
+
     std::cout << "Susceptible = " << (n_*n_)-I-R << "\n";
     std::cout << "Infected = " << I << "\n";
     std::cout << "Recovered = "<< R << "\n";
-    //we can use those to stop program if need be
-    i_stopper = I;
 
+    i_stopper = I;
   }
 };
 
 
-Board evolve(Board const &current, double const& beta, double const& gamma) {
+Board evolve(Board const& current, double const beta, double const gamma) {
   //add exception for value of beta, gamma
   if (beta>1||gamma>1||beta<0||gamma<0) {
     throw std::runtime_error("Coefficients Beta and Gamma must be between 0 and 1"); 
-  };
+  }
+
   int n = current.size();
   Board next(n);
   //seed for random generation
-  srand(time(NULL));
+  std::mt19937 gen{std::random_device{}()};
+  std::uniform_real_distribution<double> dist{0, 1};
   //cycle on matrix
-  for (int i = 0; i != n; i++) {
-    for (int j = 0; j != n; j++) {
+  for (int i = 0; i != n; ++i) {
+    for (int j = 0; j != n; ++j) {
       if (current(i, j) == State::Inf) {
-        int prob1 = rand() % 1000;
-        if (prob1 < (gamma*1000)) {
+        double prob1 = dist(gen);
+        if (prob1 < gamma) {
           //recovery/death
           next(i, j) = State::Rec;
         } else {
           next(i, j) = State::Inf;
           //cycle on neighbors
-          for (int l = i - 1; l != i + 2; ++l) {
-            for (int m = j - 1; m != j + 2; ++m) {
-              int prob2 = rand()%1000;
-              if (current(l, m) == State::Susc && prob2 < beta*1000) {
+          for (int l = i - 1; l <= i + 1; ++l) {
+            for (int m = j - 1; m <= j + 1; ++m) {
+              double prob2 = dist(gen);
+              if (current(l, m) == State::Susc && prob2 < beta) {
                 //infection!
                 next(l, m) = State::Inf;
               }
@@ -117,7 +121,7 @@ int main() {
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   while (true) {
     std::cout << "\033c";
-    board = evolve(board, 0.5, 0.2);
+    board = evolve(board, 0.9, 0.2);
     board.print1();
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     if (board.infnum()==0){
