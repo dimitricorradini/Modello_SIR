@@ -8,9 +8,8 @@
 #include <vector>
 #include <cmath>
 
-constexpr int heightG = 500;
-constexpr int widthG = 700;
-int day = 50;
+/*constexpr int widthG = 700;
+int day = 50;*/
 
 enum class State { Susc, Inf, Rec };
 
@@ -128,64 +127,63 @@ int countR(Board const &board) {
   return r;
 }
 
-struct State{  
+struct Data{  
   int S_;
   int I_;
   int R_;
 }
 
 class Graph {
-  std::vector<State> graphdata
+  sf::VertexArray curveS;
+  sf::VertexArray curveR;
+  sf::VertexArray curveI;
   static constexpr int heightG = 500;
   static constexpr int widthG = 700;
+  static constexpr auto graph_title "Grafico andamento contagi";
+  sf::RenderWindow graph_window
+  int day
   
   public:
-  void update(board){
+  Graph() : day{0}, curveS{sf::PrimitiveType::LineStrip, 0},
+  curveR{sf::PrimitiveType::LineStrip, 0},
+  curveI{sf::PrimitiveType::LineStrip, 0},
+  graph_window{sf::VideoMode(widthG, heightG), 
+  graph_title, 
+  sf::Style::Close}{}
+
+
+
+  /*void update(board){
     data_by_day today_data;
     today.S_=board.countS();
     today.R_=board.countR();
     today.I=board.size()-board.countS()-board.countR();
     graphdata.push_back(today_data);
-  };
-  
-  void draw(){//fix this!
-  const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 3);
-  const sf::Vector2f dimYaxis = sf::Vector2f(3, heightG);
-
-  sf::RenderWindow graph(sf::VideoMode(widthG, heightG), "Covid-19");
-
-  while (graph.isOpen()) {
-
-    sf::Event event;
-
-    while (graph.pollEvent(event)) {
-
+  };*/
+      /*sf::Event event;
+    while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
-        graph.close();
+        window.close();
       };
-    }
+    }*/
+  //questo lo facciamo andare solo una volta all'inizio, ma non penso sia saggio
+  //metterlo nel costruttore... void e non ha argomenti
 
-    graph.clear(sf::Color::White);
-
-    sf::RectangleShape Xaxis;
-    Xaxis.setPosition(0, heightG - 50);
-    Xaxis.setSize(dimXaxis);
-    Xaxis.setFillColor(sf::Color::Black);
-    sf::RectangleShape Yaxis;
-    Yaxis.setPosition(50, 0);
-    Yaxis.setSize(dimYaxis);
-    Yaxis.setFillColor(sf::Color::Black);
-
-    graph.draw(Xaxis);
-    graph.draw(Yaxis);
-    
-    sf::Vector2f coordS = sf::Vector2f(day, count(State::Susc,board));
-    sf::Vector2f coordR = sf::Vector2f(day, count(State::Rec,board));
-    sf::Vector2f coordI = sf::Vector2f(day, count(State::Inf,board));
-      
-    sf::VertexArray curveS(sf::PrimitiveType::LineStrip, 0);
+  
+    /*sf::VertexArray curveS(sf::PrimitiveType::LineStrip, 0);
     sf::VertexArray curveR(sf::PrimitiveType::LineStrip, 0);
-    sf::VertexArray curveI(sf::PrimitiveType::LineStrip, 0);
+    sf::VertexArray curveI(sf::PrimitiveType::LineStrip, 0);*/
+    // questa parte va fatta andare ogni ciclo, prende argomento board
+  void update(Board board){
+    sf::Vector2f coordS = sf::Vector2f(day, count(State::Susc, board));
+    sf::Vector2f coordR = sf::Vector2f(day, count(State::Rec, board));
+    sf::Vector2f coordI = sf::Vector2f(day, count(State::Inf, board));
+    //penso: dovremmo fare count fuori e poi dentro associarlo a una grandezza step_size_y
+    //step_size_x associato a day
+    //i due step sarebbe bello fossero legati al width o height/numero totale di step
+    //come faccio però a conoscerlo questo numero totale? o passo lunghezza simulazione o se implementeremo
+    //while true dovrei tenere vettori coord per quando disegno alla fine. Le info su s, r, i nel tempo andrebbero allora in un vettore
+    //di tre int direi 
     /*
     while(countR(board)!=pow(board.size(),2)) {
       day+=15;
@@ -193,21 +191,36 @@ class Graph {
       curveR.append(sf::Vertex(sf::Vector2f(day, count(State::Rec,board))));
       curveI.append(sf::Vertex(sf::Vector2f(day, count(State::Inf,board))));
 */
-      curveS.append(sf::Vertex(sf::Vector2f(day, count(State::Susc,board))));
-      curveR.append(sf::Vertex(sf::Vector2f(day, count(State::Rec,board))));
-      curveI.append(sf::Vertex(sf::Vector2f(day, count(State::Inf,board))));
-   // }
+    curveS.append(sf::Vertex(coordS));
+    curveR.append(sf::Vertex(coordR));
+    curveI.append(sf::Vertex(coordI));
+    day++;
+  }
+    
+    //questo va solo alla fine
+  void draw(){
+    graph.clear(sf::Color::White);
 
+    sf::RectangleShape Xaxis;
+    Xaxis.setPosition(0, heightG - 50);
+    Xaxis.setSize(sf::Vector2f(widthG, 3));
+    Xaxis.setFillColor(sf::Color::Black);
+    sf::RectangleShape Yaxis;
+    Yaxis.setPosition(50, 0);
+    Yaxis.setSize(sf::Vector2f(3, heightG));
+    Yaxis.setFillColor(sf::Color::Black);
+
+    graph.draw(Xaxis);
+    graph.draw(Yaxis);
     graph.draw(curveS);
     graph.draw(curveR);
     graph.draw(curveI);
 
     graph.display();
-    graph.clear(sf::Color::White);
   }
   return 0;
-}
 };
+
 
 class Display{
   
@@ -266,7 +279,6 @@ class Display{
   const int n_cells = width * height;
   bool redraw = true;
   const float fps = 1.0f;
-
   sf::RenderWindow window(sf::VideoMode(cell_size * width, cell_size * height),
                           "Covid");
   /*window.setFramerateLimit(fps);
