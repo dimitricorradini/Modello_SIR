@@ -166,8 +166,6 @@ class Graph {
         window.close();
       };
     }*/
-  //questo lo facciamo andare solo una volta all'inizio, ma non penso sia saggio
-  //metterlo nel costruttore... void e non ha argomenti
 
   
     /*sf::VertexArray curveS(sf::PrimitiveType::LineStrip, 0);
