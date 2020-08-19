@@ -134,7 +134,7 @@ std::vector<Points> set_points(Board const &board, Points &p)
     std::vector<Points> v;
 
     auto const d = pow(board.size(),2);
-    auto x = pow(board.size(), 2)/(heightG-80);
+    auto x = (heightG-80)/d;
     
 
     for (int l = 1; l <= board.size(); ++l)
@@ -156,24 +156,24 @@ std::vector<Points> set_points(Board const &board, Points &p)
         }
     }
 
-    if(heightG-80 == d) 
-    {
-        p1.sus=heightG-50-p.sus;
-        p1.rec=heightG-50-p.rec;
-        p1.inf=heightG-50-p.inf;
-    } 
-    if(heightG-80 < d)
-    {
-        p1.sus=heightG-50-round((p.sus/x));
-        p1.rec=heightG-50-round((p.rec/x));
-        p1.inf=heightG-50-round((p.inf/x));
+    /*if(heightG-80 == d) 
+    {*/
+        p1.sus=heightG-50-round(p.sus*x);
+        p1.rec=heightG-50-round(p.rec*x);
+        p1.inf=heightG-50-round(p.inf*x);
+    /*} 
+   if(heightG-80 < d)
+   {
+        p1.sus=heightG-50-round((p.sus*x));
+        p1.rec=heightG-50-round((p.rec*x));
+        p1.inf=heightG-50-round((p.inf*x));
     }
     if(heightG-80 > d)
     {
         p1.sus=heightG-50-round((x*p.sus));
         p1.rec=heightG-50-round((x*p.rec));
         p1.inf=heightG-50-round((x*p.inf));
-    }
+    }*/
 
     v.push_back(p1);
 
@@ -250,7 +250,7 @@ public:
         g_window.draw(lines);
     }
 
-    int draw(Board const &board, Points point, std::vector<Points> g_points)
+    int draw(Board const &board, std::vector<Points> g_points)
     { //fix this!
         const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 3);
         const sf::Vector2f dimYaxis = sf::Vector2f(3, heightG);
@@ -271,8 +271,8 @@ public:
 
         for (int a=0; a != g_points.size(); a++)
         {
-            float day=(a+1)*50;
-            point=g_points[a];
+            float day=50+round(a*widthG/g_points.size());
+            auto point=g_points[a];
             /*
             point1=g_points[a+1];
             int b=a+1;
@@ -284,13 +284,10 @@ public:
             curveR[a].color=sf::Color::Green;
             curveI[a].position=sf::Vector2f(day, point.inf);
             curveI[a].color=sf::Color::Red;
-    
-            g_window.draw(curveS);
-            g_window.draw(curveR);
-            g_window.draw(curveI);
-
         }
-
+        g_window.draw(curveS);
+        g_window.draw(curveR);
+        g_window.draw(curveI);
         g_window.draw(Xaxis);
         g_window.draw(Yaxis);
 
