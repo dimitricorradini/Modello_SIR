@@ -1,4 +1,3 @@
-//#include <SFML/Graphics.hpp>
 #include <cassert>
 #include <chrono>
 #include <cstdlib>
@@ -39,11 +38,11 @@ class Person{
   State pst_;
     public:
     Person(int pos, State pst, std::array<int, 2> spd) : pos_(pos), pst_(pst), spd_(spd) {
-      if (pos<0||pos_>pow(boardwidth,2)){
+      if (pos<0||pos_>pow(boardwidth,2)-1){
         throw std::runtime_error(
           "Position is out of the board");
       }
-      if (spd_[0]<0||spd_[0]>3||spd[1]<0||spd[1]>3){
+      if (spd_[0]<-3||spd_[0]>3||spd[1]<-3||spd[1]>3){
         throw std::runtime_error(
           "People are going too fast!");
       }
@@ -71,7 +70,7 @@ class Person{
  float d(Person a, Person b){
   int ax = a.position() % boardwidth;
   int ay = (a.position() - ax) / boardwidth;
-    int bx = b.position() % boardwidth;
+  int bx = b.position() % boardwidth;
   int by = (b.position() - bx) / boardwidth;
   return sqrt((ax-bx)*(ax-bx)+(ay-by)*(ay-by));
  }
@@ -90,8 +89,17 @@ class Person{
   //walk should be here(?)
   auto w_next = next.begin();
   for (auto one:current){
+      if (one.position()<3000||one.position()>996999){
+          one.speed()[1]=-one.speed()[1];
+      }
+      if ((one.position()%boardwidth<3)||(997<one.position()%boardwidth)){
+          one.speed()[1]=-one.speed()[1];
+      }
       (*w_next).position()=one.position()+one.speed()[0]+one.speed()[1]*boardwidth;
-      //add case for position at the edge
+      if ((*w_next).position()<0||(*w_next).position()>pow(boardwidth,2)-1){
+        throw std::runtime_error(
+          "Position is out of the board");
+      };
       w_next++;
   }
   auto nit = next.begin();
@@ -105,7 +113,7 @@ class Person{
             (*nit).state() = State::rec;
         }
         if (one.state() == State::inf){
-            for (std::vector<Person>::iterator i; i!=current.end(); ++i){
+            for (std::vector<Person>::iterator i=next.begin(); i!=next.end(); ++i){
               //randomly generate betac
               if ((*i).state()==State::susc){
                 if (d(one, *i) < 50){
@@ -126,40 +134,41 @@ class Person{
  int main(){
   std::vector<Person> mypop;
   std::mt19937 gen{std::random_device{}()};
-  std::uniform_int_distribution<int> dist{0, 1000000};
-  for (int a=0; a<=100; a++){
+  std::uniform_int_distribution<int> dist{0, 999999};
+  for (int a=0; a<=5; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
-    rspd[0]=dist(gen)%3;
-    rspd[1]=dist(gen)%3; 
+    rspd[0]=dist(gen)%6-3;
+    rspd[1]=dist(gen)%6-3; 
     Person person(rpos, State::susc, rspd);
     mypop.push_back(person);
-
+    //etc con susc. e inf.
   }
-    for (int a=0; a<=4; a++){
+  for (int a=0; a<=4; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
-    rspd[0]=dist(gen)%4;
-    rspd[1]=dist(gen)%4; 
+    rspd[0]=dist(gen)%6-3;
+    rspd[1]=dist(gen)%6-3; 
     Person person(rpos, State::inf, rspd);
     mypop.push_back(person);
-
+    //etc con susc. e inf.
   }
   for (int a=0; a<=1000; a++){ 
-    evolve(mypop, 0.5, 0.8)=mypop;
+    mypop=evolve(mypop, 0.5, 0.8);
     for (auto& one: mypop){
-     /* if (one.state()==State::inf){
-        std::cout<<"I";
+     if (one.state()==State::inf){
+        std::cout<<"I \n";
       }
       if (one.state()==State::rec){
-          std::cout<<"R";
+          std::cout<<"R \n";
       }
       if (one.state()==State::susc){
-          std::cout<<"S";
+          std::cout<<"S \n";
       }
-      */
-      std::cout<<one.position();
+      std::cout<<one.position()<<"\n";
+      std::cout<<one.speed()[0]<< " "<<one.speed()[1];
+      std::cout<<"\n"<<"\n";
     }
-    std::cout<<"\n";
+    std::cout<<"\n \n \n";
   }
  }
