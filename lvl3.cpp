@@ -102,7 +102,6 @@ class Person{
           double gammac = dist(gen);
           if (gammac<gamma){
             (*nit).state() = State::rec;
-            //cannot use member functions
         }
         if (one.state() == State::inf){
             for (std::vector<Person>::iterator i; i!=current.end(); ++i){
