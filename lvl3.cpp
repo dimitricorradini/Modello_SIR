@@ -173,7 +173,7 @@ class Person{
           s++;
       }
       std::cout<<one.position()<<"\n";
-      std::cout<<one.speed()[0]<< " "<<one.speed()[1]<<"/n";
+      std::cout<<one.speed()[0]<< " "<<one.speed()[1]<<"\n";
 
     }
     std::cout<<s<<" "<<r<<" "<<i;
