@@ -92,6 +92,7 @@ class Person{
   for (auto one:current){
       (*w_next).position()=one.position()+one.speed()[0]+one.speed()[1]*boardwidth;
       //add case for position at the edge
+      w_next++;
   }
   auto nit = next.begin();
   std::mt19937 gen{std::random_device{}()};
