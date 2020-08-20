@@ -133,7 +133,7 @@ class Person{
     rspd[1]=dist(gen)%3; 
     Person person(rpos, State::susc, rspd);
     mypop.push_back(person);
-    //etc con susc. e inf.
+
   }
     for (int a=0; a<=4; a++){
     auto rpos = dist(gen);
@@ -142,7 +142,7 @@ class Person{
     rspd[1]=dist(gen)%3; 
     Person person(rpos, State::inf, rspd);
     mypop.push_back(person);
-    //etc con susc. e inf.
+
   }
   for (int a=0; a<=1000; a++){ 
     evolve(mypop, 0.5, 0.8)=mypop;
