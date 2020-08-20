@@ -116,10 +116,10 @@ class Person{
             for (std::vector<Person>::iterator i=next.begin(); i!=next.end(); ++i){
               //randomly generate betac
               if ((*i).state()==State::susc){
-                if (d(one, *i) < 50){
+                if (d(one, *i) < 100){
                   double betac = dist(gen);
                   if (betac<beta){
-                    (*nit).state()=State::inf;
+                    (*i).state()=State::inf;
                     }
                   }  
                 }  
@@ -144,7 +144,7 @@ class Person{
     mypop.push_back(person);
     //etc con susc. e inf.
   }
-  for (int a=0; a<=4; a++){
+  for (int a=0; a<=100; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
     rspd[0]=dist(gen)%6-3;
@@ -155,20 +155,28 @@ class Person{
   }
   for (int a=0; a<=1000; a++){ 
     mypop=evolve(mypop, 0.5, 0.8);
+      int s=0;
+      int i=0;
+      int r=0;
     for (auto& one: mypop){
-     if (one.state()==State::inf){
-        std::cout<<"I \n";
+
+      if (one.state()==State::inf){
+        //std::cout<<"I \n";
+        i++;
       }
       if (one.state()==State::rec){
-          std::cout<<"R \n";
+          //std::cout<<"R \n";
+        r++;
       }
       if (one.state()==State::susc){
-          std::cout<<"S \n";
+          //std::cout<<"S \n";
+          s++;
       }
       std::cout<<one.position()<<"\n";
-      std::cout<<one.speed()[0]<< " "<<one.speed()[1];
-      std::cout<<"\n"<<"\n";
+      std::cout<<one.speed()[0]<< " "<<one.speed()[1]<<"/n";
+
     }
+    std::cout<<s<<" "<<r<<" "<<i;
     std::cout<<"\n \n \n";
   }
  }
