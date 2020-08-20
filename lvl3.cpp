@@ -138,8 +138,8 @@ class Person{
     for (int a=0; a<=4; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
-    rspd[0]=dist(gen)%3;
-    rspd[1]=dist(gen)%3; 
+    rspd[0]=dist(gen)%4;
+    rspd[1]=dist(gen)%4; 
     Person person(rpos, State::inf, rspd);
     mypop.push_back(person);
 
