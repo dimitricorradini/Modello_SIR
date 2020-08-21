@@ -128,6 +128,72 @@ class Person{
   return next;
  }
 
+/*class Display{
+  sf::RenderWindow m_window;
+  static constexpr dot_size=10;
+  static constexpr auto s_window_title = "Virus simulation";
+
+  public:
+    Display(): m_window{
+      sf::VideoMode(boardwidth, boardwidth),
+      s_window_title,
+      sf::Style::Close}{} 
+}
+void wait_key_pressed()
+    {
+        sf::Event event;
+
+        m_window.waitEvent(event);
+        while (event.type != sf::Event::KeyPressed)
+        {
+            if (event.key.code != sf::Keyboard::Escape)
+            {
+                m_window.waitEvent(event);
+            }
+        }
+    }
+
+    void closing()
+    {
+        sf::Event e;
+        m_window.waitEvent(e);
+
+        while(e.key.code!=sf::Keyboard::E)
+        {
+            m_window.waitEvent(e);
+            
+            if(e.key.code==sf::Keyboard::E)
+            {
+                m_window.close();
+            }
+        }
+    }
+
+    int draw (std::vector<person> population){
+      sf::CircleShape dotperson(dot_size);
+      m_window.clear(sf::Color::Black);
+      for (auto const& one:population){
+        int a=one.position()%boardwidth
+        dotperson.setPosition(a, (one.position-a)/a);
+        
+                if (one.state() == State::Susc)
+                {
+                    dotperson.setFillColor(sf::Color::Blue);
+                }
+                if (one.state() == State::Inf)
+                {
+                    dotperson.setFillColor(sf::Color::Red);
+                }
+                if (one.state() == State::Rec)
+                {
+                    dotperson.setFillColor(sf::Color::Green);
+                }
+                m_window.draw(dotperson);
+        }
+      m_window.display();
+      return 0; 
+    }*/
+
  int main(){
   std::vector<Person> mypop;
   std::mt19937 gen{std::random_device{}()};
