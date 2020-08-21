@@ -16,19 +16,15 @@ enum class State {susc, inf, rec};
 {
   int n_;
   std::vector<State> board_;
-
   public:
   Board(int n) : n_(n), board_(n * n) {}
-
   State operator()(int i, int j) const {
     return (i >= 0 && i < n_ && j >= 0 && j < n_) ? board_[i * n_ + j] : State::Rec;
   }
-
   State& operator()(int i, int j) {
     assert(i >= 0 && i < n_ && j >= 0 && j < n_);
     return board_[i * n_ + j];
   }
-
   int size() const { return n_; }
 };*/
 
@@ -79,7 +75,7 @@ class Person{
     one.position()=one.position()+one.speed()[0]+one.speed()[1]*boardwidth
   }
  }*/
- std::vector<Person> evolve(std::vector<Person> const& current, int beta, int gamma){
+ std::vector<Person> evolve(std::vector<Person> const& current, double beta, double gamma){
   if (beta > 1 || gamma > 1 || beta < 0 || gamma < 0) {
     throw std::runtime_error(
         "Coefficients Beta and Gamma must be between 0 and 1");
@@ -98,7 +94,7 @@ class Person{
       (*w_next).position()=one.position()+one.speed()[0]+one.speed()[1]*boardwidth;
       if ((*w_next).position()<0||(*w_next).position()>pow(boardwidth,2)-1){
         throw std::runtime_error(
-          "Position is out of the board");
+          "Someone fell off the board");
       };
       w_next++;
   }
@@ -118,15 +114,16 @@ class Person{
               if ((*i).state()==State::susc){
                 if (d(one, *i) < 100){
                   double betac = dist(gen);
+                  std::cout<<"betac ="<<betac<<"\n";
                   if (betac<beta){
                     (*i).state()=State::inf;
-                    }
-                  }  
+                  }
                 }  
-              }
-            }
+            }  
         }
-      nit++;
+    }
+    }
+    nit++;
   }
   return next;
  }
@@ -135,7 +132,7 @@ class Person{
   std::vector<Person> mypop;
   std::mt19937 gen{std::random_device{}()};
   std::uniform_int_distribution<int> dist{0, 999999};
-  for (int a=0; a<=5; a++){
+  for (int a=0; a<=1000; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
     rspd[0]=dist(gen)%6-3;
@@ -144,7 +141,7 @@ class Person{
     mypop.push_back(person);
     //etc con susc. e inf.
   }
-  for (int a=0; a<=100; a++){
+  for (int a=0; a<=5; a++){
     auto rpos = dist(gen);
     std::array<int, 2> rspd;
     rspd[0]=dist(gen)%6-3;
