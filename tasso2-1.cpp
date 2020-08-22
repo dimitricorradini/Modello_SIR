@@ -124,8 +124,9 @@ int countI(Board const &board)
 }
 
 
-Points set_points(Board const &board, Points &p)
+Points set_points(Board const &board)
 {
+    Points p;
     Points p1;
     p1.inf=0.f;
     p1.rec=0.f;
@@ -162,18 +163,6 @@ Points set_points(Board const &board, Points &p)
 
     return p1;
 }
-//definisco un vector v che dovrà contenere i vari Points, quindi pongo p1 uguale al point che viene fuori
-//dalla funzione ser_points, ridefinisco la size di v utilizzando un int che incremento ad ogni ciclo nel main,
-//assegno p1 all'ultimo elemento di v (i vari std::cout mi servono per vedere fino a dove mi funge la funzione)
-std::vector<Points> v_point (Board const &board, Points &p, int n,std::vector<Points> v)
-{
-    Points p1;
-    p1=set_points(board,p);
-    v.push_back(p1);
-    return v;
-}
-
-
 //bisogna capire bene come funzionano vertexarray e il primitivetype::Lines
 class Graph
 {
@@ -183,19 +172,6 @@ class Graph
 
 public:
     Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close}, g_points(0) {}
-
-    void launch_graph()
-    {
-        sf::Event event;
-        g_window.waitEvent(event);
-        while (event.type != sf::Event::KeyPressed)
-        {
-            if (event.key.code != sf::Keyboard::Escape)
-            {
-                g_window.waitEvent(event);
-            }
-        }
-    }
 
     void wait_key_pressed()
     {
@@ -216,75 +192,22 @@ public:
         sf::Event e;
         g_window.waitEvent(e);
 
-        while(e.key.code!=sf::Keyboard::E)
+        while(e.key.code!=sf::Keyboard::Q)
         {
             g_window.waitEvent(e);
             
-            if(e.key.code==sf::Keyboard::E)
+            if(e.key.code==sf::Keyboard::Q)
             {
                 g_window.close();
             }
         }
     }
 
-    int dra()
-    {
-        const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 2);
-        const sf::Vector2f dimYaxis = sf::Vector2f(2, heightG);
-        sf::RectangleShape Xaxis(dimXaxis);
-        sf::RectangleShape Yaxis(dimYaxis);
-        Xaxis.setPosition(0, heightG - 50);
-        Xaxis.setFillColor(sf::Color::Black);
-        Yaxis.setPosition(50, 0);
-        Yaxis.setFillColor(sf::Color::Black);
-
-        sf::Font font;
-        if(!font.loadFromFile("/home/tasso/root/fonts/arial.ttf"))
-        {
-            throw("COULD NOT LOAD THE FILE");
-        }
-
-        std::string n_day="diocane";
-        sf::Text text(n_day, font);
-        text.setFont(font);
-        text.setString(n_day);
-        text.setStyle(sf::Text::Bold);
-        text.setCharacterSize(10);
-        text.setFillColor(sf::Color::Red);
-/*
-        g_window.clear(sf::Color::White);
-
-        g_window.draw(Xaxis);
-        g_window.draw(Yaxis);
-
-        sf::VertexArray lines(sf::LinesStrip, 4);
-
-        lines[0].position = sf::Vector2f(100, 50);
-        lines[0].color=sf::Color::Red;
-        lines[1].position = sf::Vector2f(200, 100);
-        lines[1].color=sf::Color::Red;
-        lines[2].position = sf::Vector2f(300, 50);
-        lines[2].color=sf::Color::Red;
-        lines[3].position = sf::Vector2f(450, 200);
-        lines[3].color=sf::Color::Green;
-
-        g_window.draw(lines);
-        */
-       g_window.draw(text);
-        g_window.display();
-    }
-
     void draw(Board const &board, std::vector<Points> g_points)
     { 
-        sf::Font font;
-        if(!font.loadFromFile("/home/tasso/root/fonts/arial.ttf"))
-        {
-            throw("COULD NOT LOAD THE FILE");
-        }
-        auto const d = pow(board.size(),2);
-        auto const x = (heightG-80)/d;
-        const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 2);
-        const sf::Vector2f dimYaxis = sf::Vector2f(2, heightG);
+
+        const sf::Vector2f dimXaxis (widthG, 2);
+        const sf::Vector2f dimYaxis (2, heightG);
         sf::RectangleShape Xaxis(dimXaxis);
         sf::RectangleShape Yaxis(dimYaxis);
         Xaxis.setPosition(0, heightG - 50);
@@ -294,10 +217,14 @@ public:
 
         g_window.clear(sf::Color::White);
 
+        sf::Font font;
+        if(!font.loadFromFile("/home/tasso/root/fonts/arial.ttf"))
+        {
+            throw("COULD NOT LOAD THE FILE");
+        }
         std::string n_day;
         sf::Text text(n_day,font);
         text.setFont(font);
-        //text.setString(n_day);
         text.setStyle(sf::Text::Bold);
         text.setCharacterSize(10);
         text.setFillColor(sf::Color::Black);
@@ -318,10 +245,10 @@ public:
         for (int a=0; a != g_points.size(); a++)
         {
             std::cout<<a<<'\n';
-            double b =a/5-floor(a/5);
+            //double b =a/5-floor(a/5);
             double c= a*0.2;
             std::cout<<floor(c)<<' '<<c<<'\n';
-            std::cout <<"numero b ="<<b<<'\n';
+            //std::cout <<"numero b ="<<b<<'\n';
             //std::cout<<n_day<<'\n';
             float day=50+round(a*(widthG-50)/g_points.size());
             //float g=50+round(a*(widthG-50)/g_points.size());
@@ -427,11 +354,11 @@ public:
         sf::Event e;
         m_window.waitEvent(e);
 
-        while(e.key.code!=sf::Keyboard::E)
+        while(e.key.code!=sf::Keyboard::Q)
         {
             m_window.waitEvent(e);
             
-            if(e.key.code==sf::Keyboard::E)
+            if(e.key.code==sf::Keyboard::Q)
             {
                 m_window.close();
             }
@@ -480,11 +407,7 @@ int main()
     int dim = 40;
     int a=1;
     Board board(dim);
-    Points point;
-    Points p;
     std::vector<Points> g_points;
-    p=set_points(board,point);
-    g_points=v_point(board, point,a,g_points);
 
     board(0, 39) = State::Inf;
     board(11, 17) = State::Inf;
@@ -494,6 +417,8 @@ int main()
     board(14, 15) = State::Inf;
     board(14, 39) = State::Inf;
 
+    g_points.push_back(set_points(board));
+
     Display display(dim);
     display.draw(board);
     display.wait_key_pressed();
@@ -502,8 +427,7 @@ int main()
         a++;
         board = evolve(board, 0.4, 0.4);
         display.draw(board);
-        p=set_points(board, point);
-        g_points=v_point(board, point, a, g_points);
+        g_points.push_back(set_points(board));
         std::this_thread::sleep_for(std::chrono::milliseconds(800));
         
         if (countI(board) == 0)
@@ -520,5 +444,4 @@ int main()
     //graph.text_instructions();
     graph.draw(board, g_points);
     graph.closing();
-   
 }
