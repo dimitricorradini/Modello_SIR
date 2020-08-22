@@ -238,6 +238,20 @@ public:
         Yaxis.setPosition(50, 0);
         Yaxis.setFillColor(sf::Color::Black);
 
+        sf::Font font;
+        if(!font.loadFromFile("/home/tasso/root/fonts/arial.ttf"))
+        {
+            throw("COULD NOT LOAD THE FILE");
+        }
+
+        std::string n_day="diocane";
+        sf::Text text(n_day, font);
+        text.setFont(font);
+        text.setString(n_day);
+        text.setStyle(sf::Text::Bold);
+        text.setCharacterSize(10);
+        text.setFillColor(sf::Color::Red);
+/*
         g_window.clear(sf::Color::White);
 
         g_window.draw(Xaxis);
@@ -255,13 +269,18 @@ public:
         lines[3].color=sf::Color::Green;
 
         g_window.draw(lines);
+        */
+       g_window.draw(text);
         g_window.display();
     }
 
     void draw(Board const &board, std::vector<Points> g_points)
     { 
         sf::Font font;
-        font.loadFromFile("/home/tasso/root/fonts/arial.ttf");
+        if(!font.loadFromFile("/home/tasso/root/fonts/arial.ttf"))
+        {
+            throw("COULD NOT LOAD THE FILE");
+        }
         auto const d = pow(board.size(),2);
         auto const x = (heightG-80)/d;
         const sf::Vector2f dimXaxis = sf::Vector2f(widthG, 2);
@@ -273,21 +292,24 @@ public:
         Yaxis.setPosition(50, 0);
         Yaxis.setFillColor(sf::Color::Black);
 
-        std::string n_day;
-        sf::Text text(n_day, font);
-        text.setStyle(sf::Text::Bold);
-        text.setCharacterSize(5);
-        text.setFillColor(sf::Color::Black);
-
         g_window.clear(sf::Color::White);
+
+        std::string n_day;
+        sf::Text text(n_day,font);
+        text.setFont(font);
+        //text.setString(n_day);
+        text.setStyle(sf::Text::Bold);
+        text.setCharacterSize(10);
+        text.setFillColor(sf::Color::Black);
+        std::vector<int> v_text;
 
         sf::VertexArray curveS(sf::LineStrip, g_points.size());
         sf::VertexArray curveR(sf::LineStrip, g_points.size());
         sf::VertexArray curveI(sf::LineStrip, g_points.size());
 
-        sf::CircleShape PointS(3);
-        sf::CircleShape PointR(3);
-        sf::CircleShape PointI(3);
+        sf::CircleShape PointS(2);
+        sf::CircleShape PointR(2);
+        sf::CircleShape PointI(2);
 
         PointS.setFillColor(sf::Color::Blue);
         PointR.setFillColor(sf::Color::Green);
@@ -295,28 +317,61 @@ public:
 
         for (int a=0; a != g_points.size(); a++)
         {
-            n_day=std::to_string(a);
-            std::cout<<n_day<<'\n';
-            float day=50+round(a*widthG/g_points.size());
+            std::cout<<a<<'\n';
+            double b =a/5-floor(a/5);
+            double c= a*0.2;
+            std::cout<<floor(c)<<' '<<c<<'\n';
+            std::cout <<"numero b ="<<b<<'\n';
+            //std::cout<<n_day<<'\n';
+            float day=50+round(a*(widthG-50)/g_points.size());
+            //float g=50+round(a*(widthG-50)/g_points.size());
             auto point=g_points[a];
             curveS[a].position=sf::Vector2f(day, point.sus);
-            PointS.setPosition(day,point.sus-2*x);
+            PointS.setPosition(day,point.sus-2);
             curveS[a].color=sf::Color::Blue;
             curveR[a].position=sf::Vector2f(day, point.rec);
-            PointR.setPosition(day,point.rec-3*x);
+            PointR.setPosition(day,point.rec-2);
             curveR[a].color=sf::Color::Green;
             curveI[a].position=sf::Vector2f(day, point.inf);
-            PointI.setPosition(day,point.inf-4*x);
+            PointI.setPosition(day,point.inf-2);
             curveI[a].color=sf::Color::Red;
-
-            text.setPosition(day,heightG-42);
-
+            
+            if(floor(c)==c)
+            {
+                v_text.push_back(a);
+            }
+            /*
+            else
+            {
+                n_day=" ";
+                sf::Vector2f v_text (day+1, heightG-42);
+                text.setPosition(v_text);
+                text.setString(n_day);  
+                g_window.draw(text);
+            }
+            */
+        
             g_window.draw(PointS);
             g_window.draw(PointR);
             g_window.draw(PointI);
+        }
+        for(int b=0; b!=v_text.size(); b++)
+        {
+            n_day=std::to_string(v_text[b]);
+            float day1= 50+5*round(b*(widthG-50)/g_points.size());
+            sf::Vector2f v_text (day1+1, heightG-42);
+            text.setPosition(v_text);
+            text.setString(n_day);  
             g_window.draw(text);
         }
-        
+        /*
+        sf::RectangleShape box;
+        box.setPosition(heightG/2,widthG/2);
+        box.setFillColor(sf::Color::Cyan);
+        const sf::Vector2f size (350.f,250.f);
+        box.setSize(size);
+        g_window.draw(box);
+*/
         g_window.draw(curveR);
         g_window.draw(curveI);
         g_window.draw(curveS);
@@ -326,6 +381,7 @@ public:
 
         g_window.display();
     }
+
 };
 
 class Display
@@ -430,13 +486,13 @@ int main()
     p=set_points(board,point);
     g_points=v_point(board, point,a,g_points);
 
-    board(10, 16) = State::Inf;
+    board(0, 39) = State::Inf;
     board(11, 17) = State::Inf;
     board(2, 2) = State::Inf;
     board(13,16) = State::Inf;
     board(3, 9) = State::Inf;
     board(14, 15) = State::Inf;
-    board(14, 2) = State::Inf;
+    board(14, 39) = State::Inf;
 
     Display display(dim);
     display.draw(board);
@@ -444,7 +500,7 @@ int main()
     while (true)
     {
         a++;
-        board = evolve(board, 0.5, 0.45);
+        board = evolve(board, 0.4, 0.4);
         display.draw(board);
         p=set_points(board, point);
         g_points=v_point(board, point, a, g_points);
@@ -461,6 +517,7 @@ int main()
     Graph graph;
     graph.wait_key_pressed();
     //graph.dra();
+    //graph.text_instructions();
     graph.draw(board, g_points);
     graph.closing();
    
