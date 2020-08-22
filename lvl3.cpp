@@ -89,7 +89,7 @@ class Person{
           one.speed()[1]=-one.speed()[1];
       }
       if ((one.position()%boardwidth<3)||(997<one.position()%boardwidth)){
-          one.speed()[1]=-one.speed()[1];
+          one.speed()[0]=-one.speed()[0];
       }
       (*w_next).position()=one.position()+one.speed()[0]+one.speed()[1]*boardwidth;
       if ((*w_next).position()<0||(*w_next).position()>pow(boardwidth,2)-1){
