@@ -206,13 +206,31 @@ public:
     void draw(Board const &board, std::vector<Points> g_points)
     { 
 
-        const sf::Vector2f dimXaxis (widthG, 2);
-        const sf::Vector2f dimYaxis (2, heightG);
+        const sf::Vector2f dimXaxis (widthG-55, 2);
+        const sf::Vector2f dimYaxis (2, heightG-80);
+        const sf::Vector2f arrow (20, 2);
+        const sf::Vector2f arrow1 (2,20);
         sf::RectangleShape Xaxis(dimXaxis);
         sf::RectangleShape Yaxis(dimYaxis);
-        Xaxis.setPosition(0, heightG - 50);
+        sf::RectangleShape x_arrow(arrow);
+        sf::RectangleShape y_arrow(arrow1);
+        sf::RectangleShape x_arrow1(arrow);
+        sf::RectangleShape y_arrow1(arrow1);
+        y_arrow.setPosition(50,30);
+        y_arrow.setFillColor(sf::Color::Black);
+        y_arrow.setRotation(45);
+        y_arrow1.setPosition(50,30);
+        y_arrow1.setRotation(-45);
+        y_arrow1.setFillColor(sf::Color::Black);
+        x_arrow.setPosition(widthG-18,heightG-64);
+        x_arrow.setFillColor(sf::Color::Black);
+        x_arrow.setRotation(45);
+        x_arrow1.setFillColor(sf::Color::Black);
+        x_arrow1.setPosition(widthG-19,heightG-36);
+        x_arrow1.setRotation(-45);
+        Xaxis.setPosition(50, heightG - 50);
         Xaxis.setFillColor(sf::Color::Black);
-        Yaxis.setPosition(50, 0);
+        Yaxis.setPosition(50,30);
         Yaxis.setFillColor(sf::Color::Black);
 
         g_window.clear(sf::Color::White);
@@ -234,9 +252,9 @@ public:
         sf::VertexArray curveR(sf::LineStrip, g_points.size());
         sf::VertexArray curveI(sf::LineStrip, g_points.size());
 
-        sf::CircleShape PointS(2);
-        sf::CircleShape PointR(2);
-        sf::CircleShape PointI(2);
+        sf::CircleShape PointS(2,50);
+        sf::CircleShape PointR(2,50);
+        sf::CircleShape PointI(2,50);
 
         PointS.setFillColor(sf::Color::Blue);
         PointR.setFillColor(sf::Color::Green);
@@ -267,17 +285,7 @@ public:
             {
                 v_text.push_back(a);
             }
-            /*
-            else
-            {
-                n_day=" ";
-                sf::Vector2f v_text (day+1, heightG-42);
-                text.setPosition(v_text);
-                text.setString(n_day);  
-                g_window.draw(text);
-            }
-            */
-        
+      
             g_window.draw(PointS);
             g_window.draw(PointR);
             g_window.draw(PointI);
@@ -305,7 +313,10 @@ public:
     
         g_window.draw(Xaxis);
         g_window.draw(Yaxis);
-
+        g_window.draw(x_arrow);
+        g_window.draw(x_arrow1);
+        g_window.draw(y_arrow);
+        g_window.draw(y_arrow1);
         g_window.display();
     }
 
@@ -348,6 +359,24 @@ public:
             }
         }
     }
+    bool stop_selection()
+    {
+        sf::Event event;
+
+        m_window.waitEvent(event);
+        while (event.type != sf::Event::KeyPressed)
+        {
+            if (event.key.code == sf::Keyboard::Escape)
+            {
+                return true;
+            }
+            else if (event.key.code==sf::Keyboard::Q)
+            {
+                return false;
+            }
+        }
+    }
+    
 
     void closing()
     {
@@ -364,6 +393,79 @@ public:
             }
         }
     }
+
+    void click(Board &board)
+    {
+        //sf::Event e;
+        //m_window.waitEvent(e);
+        
+        sf::Vector2i mouse;
+        while(m_window.isOpen())
+        {
+            sf::Event e;
+            while(m_window.pollEvent(e))
+            {
+                switch(e.type)
+                {
+                    case sf::Event::MouseButtonPressed :
+                    std::cout<<"diomerda"<<'\n';
+                    switch(e.key.code)
+                    {
+                        case sf::Mouse::Left :
+                        std::cout<<"premuto left"<<'\n';
+                        mouse=sf::Mouse::getPosition(m_window);
+                        std::cout<<mouse.x<<' '<<mouse.y<<'\n';
+                        for (int i = 0; i != m_board_side; ++i)
+                            {
+                            if((i*10)<mouse.x && ((i+1)*10)>mouse.x)
+                            {
+                                std::cout<<'1'<<'\n';
+                                for (int j = 0; j != m_board_side; ++j)
+                                {
+                                    if((j*10)<mouse.y && ((j+1)*10)>mouse.y)
+                                    {
+                                        std::cout<<'2'<<'\n';
+                                        board(i,j)=State::Inf;
+                                        if(board(i,j)==State::Inf)
+                                        {
+                                            std::cout<<'3'<<'\n';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    
+                }
+                
+            }
+            
+        }
+
+    }
+/*
+    Board choose(Board board)
+    {
+        sf::Vector2i mouse = click();
+
+        for (int i = 0; i != m_board_side; ++i)
+            {
+                if(i*10<mouse.x && (i+1)*10>mouse.x)
+                {
+                    for (int j = 0; j != m_board_side; ++j)
+                    {
+                        if(j*10<mouse.y && (j+1)*10>mouse.y)
+                        {
+                            board(i,j)=State::Inf;
+                        }
+                    }
+                }
+            }
+        return board;
+    }
+    
+*/
 
     int draw(Board const &board)
     {
@@ -405,10 +507,20 @@ public:
 int main()
 {
     int dim = 40;
-    int a=1;
+    int b = 6;
+    int a;
     Board board(dim);
     std::vector<Points> g_points;
-
+    Display display(dim);
+    display.draw(board);
+    for(a=1;a<=b;a++)
+    {
+        display.click(board);
+        display.draw(board);
+    }
+    //board.click(board);
+    //display.draw(board);
+    /*
     board(0, 39) = State::Inf;
     board(11, 17) = State::Inf;
     board(2, 2) = State::Inf;
@@ -416,16 +528,15 @@ int main()
     board(3, 9) = State::Inf;
     board(14, 15) = State::Inf;
     board(14, 39) = State::Inf;
-
+    */
     g_points.push_back(set_points(board));
 
-    Display display(dim);
-    display.draw(board);
     display.wait_key_pressed();
+
     while (true)
     {
         a++;
-        board = evolve(board, 0.4, 0.4);
+        board = evolve(board, 0.4, 0.8);
         display.draw(board);
         g_points.push_back(set_points(board));
         std::this_thread::sleep_for(std::chrono::milliseconds(800));
@@ -444,4 +555,5 @@ int main()
     //graph.text_instructions();
     graph.draw(board, g_points);
     graph.closing();
+   
 }
