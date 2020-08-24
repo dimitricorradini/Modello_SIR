@@ -14,7 +14,8 @@ enum class State
 {
     Susc,
     Inf,
-    Rec
+    Rec,
+    Dead
 };
 
 class Board
@@ -40,12 +41,12 @@ public:
     int size() const { return n_; }
 };
 
-Board evolve(Board const &current, double const beta, double const gamma)
+Board evolve(Board const &current, double const& beta, double const& gamma, double const& mu)
 {
     // add exception for value of beta, gamma
-    if (beta > 1 || gamma > 1 || beta < 0 || gamma < 0)
+    if (beta > 1 || (gamma+mu) > 1 || beta < 0 || gamma < 0 || mu < 0)
     {
-        throw std::runtime_error{"Coefficients Beta and Gamma must be between 0 and 1"};
+        throw std::runtime_error{"Coefficient error: inserted values don't make sense"};
     }
 
     int n = current.size();
@@ -60,25 +61,33 @@ Board evolve(Board const &current, double const beta, double const gamma)
         {
             if (current(i, j) == State::Inf)
             {
-                double prob1 = dist(gen);
-                if (prob1 < gamma)
+                double prob_rec = dist(gen);
+                if (prob_rec < gamma)
                 {
                     //recovery/death
                     next(i, j) = State::Rec;
                 }
                 else
                 {
-                    next(i, j) = State::Inf;
-                    //cycle on neighbors
-                    for (int l = i - 1; l <= i + 1; ++l)
+                    prob_death = dist(gen);
+                    if (prob_death < mu)
                     {
-                        for (int m = j - 1; m <= j + 1; ++m)
+                        next(i, j) = State::Dead;
+                    }
+                    else
+                    {
+                        next(i, j) = State::Inf;
+                        //cycle on neighbors
+                        for (int l = i - 1; l <= i + 1; ++l)
                         {
-                            double prob2 = dist(gen);
-                            if (current(l, m) == State::Susc && prob2 < beta)
+                            for (int m = j - 1; m <= j + 1; ++m)
                             {
-                                //infection!
-                                next(l, m) = State::Inf;
+                                double prob2 = dist(gen);
+                                if (current(l, m) == State::Susc && prob2 < beta)
+                                {
+                                    //infection!
+                                    next(l, m) = State::Inf;
+                                }
                             }
                         }
                     }
@@ -87,7 +96,7 @@ Board evolve(Board const &current, double const beta, double const gamma)
             else
             {
                 if (next(i, j) != State::Inf)
-                { //non può disinfettarsi in automatico!
+                { //tranne inf giacchè non può disinfettarsi in automatico!
                     next(i, j) = current(i, j);
                 }
             }
@@ -101,13 +110,13 @@ struct Points
     float sus;
     float rec;
     float inf;
-    //float day;
+    float dead;
 };
 
 static constexpr int heightG = 700;
 static constexpr int widthG = 700;
 
-int countI(Board const &board)
+/*int countI(Board const &board)
 {
     int inf_ = 0;
     for (int l = 1; l <= board.size(); ++l)
@@ -121,7 +130,7 @@ int countI(Board const &board)
         };
     }
     return inf_;
-}
+}*/
 
 
 Points set_points(Board const &board)
@@ -131,9 +140,11 @@ Points set_points(Board const &board)
     p1.inf=0.f;
     p1.rec=0.f;
     p1.sus=0.f;
+    p1.dead=0.f;
     p.sus=0.f;
     p.rec=0.f;
     p.inf=0.f;
+    p.dead=0.f;
 
     auto const d = pow(board.size(),2);
     auto const x = (heightG-80)/d;
@@ -154,12 +165,17 @@ Points set_points(Board const &board)
             {
                 ++p.inf;
             }
+            if (board(l, j) == State::Dead)
+            {
+                ++p.dead;
+            }
         }
     }
 
     p1.sus=heightG-50-round(p.sus*x);
     p1.rec=heightG-50-round(p.rec*x);
     p1.inf=heightG-50-round(p.inf*x);
+    p1.dead=heightG-50-round(p.dead*x);
 
     return p1;
 }
@@ -251,14 +267,17 @@ public:
         sf::VertexArray curveS(sf::LineStrip, g_points.size());
         sf::VertexArray curveR(sf::LineStrip, g_points.size());
         sf::VertexArray curveI(sf::LineStrip, g_points.size());
+        sf::VertexArray curveD(sf::LineStrip, g_points.size());
 
-        sf::CircleShape PointS(2,50);
-        sf::CircleShape PointR(2,50);
-        sf::CircleShape PointI(2,50);
+        sf::CircleShape PointS(2 , 50);
+        sf::CircleShape PointR(2 , 50);
+        sf::CircleShape PointI(2 , 50);
+        sf::CircleShape PointD(2 , 50);
 
         PointS.setFillColor(sf::Color::Blue);
         PointR.setFillColor(sf::Color::Green);
         PointI.setFillColor(sf::Color::Red);
+        PointD.setFillColor(sf::Color::Purple);
 
         for (int a=0; a != g_points.size(); a++)
         {
@@ -271,15 +290,22 @@ public:
             float day=50+round(a*(widthG-50)/g_points.size());
             //float g=50+round(a*(widthG-50)/g_points.size());
             auto point=g_points[a];
+            
             curveS[a].position=sf::Vector2f(day, point.sus);
             PointS.setPosition(day,point.sus-2);
             curveS[a].color=sf::Color::Blue;
+            
             curveR[a].position=sf::Vector2f(day, point.rec);
             PointR.setPosition(day,point.rec-2);
             curveR[a].color=sf::Color::Green;
+            
             curveI[a].position=sf::Vector2f(day, point.inf);
             PointI.setPosition(day,point.inf-2);
             curveI[a].color=sf::Color::Red;
+            
+            curveD[a].position=sf::Vector2f(day, point.dead);
+            PointD.setPosition(day,point.dead-2);
+            curveD[a].color=sf::Color::Purple;
             
             if(floor(c)==c)
             {
@@ -289,6 +315,7 @@ public:
             g_window.draw(PointS);
             g_window.draw(PointR);
             g_window.draw(PointI);
+            g_window.draw(PointD);
         }
         for(int b=0; b!=v_text.size(); b++)
         {
@@ -310,6 +337,7 @@ public:
         g_window.draw(curveR);
         g_window.draw(curveI);
         g_window.draw(curveS);
+        g_window.draw(curveD);
     
         g_window.draw(Xaxis);
         g_window.draw(Yaxis);
