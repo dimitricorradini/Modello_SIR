@@ -86,7 +86,7 @@ public:
         PointR.setFillColor(sf::Color::Green);
         PointI.setFillColor(sf::Color::Red);
 
-        for (int a=0; a != g_points.size(); a++)
+        for (unsigned int a=0; a != g_points.size(); a++)
         {
             float day=50+round(a*(widthG-50)/g_points.size());
             auto point=g_points[a];
