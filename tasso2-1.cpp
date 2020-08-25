@@ -69,7 +69,7 @@ Board evolve(Board const &current, double const& beta, double const& gamma, doub
                 }
                 else
                 {
-                    prob_death = dist(gen);
+                    double prob_death = dist(gen);
                     if (prob_death < mu)
                     {
                         next(i, j) = State::Dead;
@@ -116,7 +116,7 @@ struct Points
 static constexpr int heightG = 700;
 static constexpr int widthG = 700;
 
-/*int countI(Board const &board)
+int countI(Board const &board)
 {
     int inf_ = 0;
     for (int l = 1; l <= board.size(); ++l)
@@ -130,7 +130,7 @@ static constexpr int widthG = 700;
         };
     }
     return inf_;
-}*/
+}
 
 
 Points set_points(Board const &board)
@@ -149,9 +149,9 @@ Points set_points(Board const &board)
     auto const d = pow(board.size(),2);
     auto const x = (heightG-80)/d;
     
-    for (int l = 1; l <= board.size(); ++l)
+    for (int l = 1; l <= board.size()-1; ++l)
     {
-        for (int j = 1; j <= board.size(); ++j)
+        for (int j = 1; j <= board.size()-1; ++j)
         {
             if (board(l, j) == State::Susc)
             {
@@ -221,21 +221,49 @@ public:
 
     void draw(Board const &board, std::vector<Points> g_points)
     { 
-
+        int r=-1;
+        auto const d = pow(board.size(),2);
+        auto const x = (heightG-100)/d;
+        
         const sf::Vector2f dimXaxis (widthG-55, 2);
-        const sf::Vector2f dimYaxis (2, heightG-80);
+        const sf::Vector2f dimYaxis (2, heightG-100);
         const sf::Vector2f arrow (20, 2);
         const sf::Vector2f arrow1 (2,20);
+        const sf::Vector2f legend_box(310,45);
+        const sf::Vector2f lines(30,2);
+        const sf::Vector2f p_line(8,1);
+        const sf::Vector2f p_line1(12,2);
+        sf::RectangleShape pop_line(p_line);
+        sf::RectangleShape pop_line1(p_line1);
+        sf::RectangleShape lineS(lines);
+        sf::RectangleShape lineR(lines);
+        sf::RectangleShape lineI(lines);
+        sf::RectangleShape lineD(lines);
+        sf::RectangleShape legend(legend_box);
         sf::RectangleShape Xaxis(dimXaxis);
         sf::RectangleShape Yaxis(dimYaxis);
         sf::RectangleShape x_arrow(arrow);
         sf::RectangleShape y_arrow(arrow1);
         sf::RectangleShape x_arrow1(arrow);
         sf::RectangleShape y_arrow1(arrow1);
-        y_arrow.setPosition(50,30);
+        pop_line.setFillColor(sf::Color::Black);
+        pop_line1.setFillColor(sf::Color::Black);
+        lineS.setPosition(widthG-226,38);
+        lineR.setPosition(widthG-154,38);
+        lineI.setPosition(widthG-72,38);
+        lineD.setPosition(widthG-298,38);
+        lineD.setFillColor(sf::Color::Black);
+        lineS.setFillColor(sf::Color::Blue);
+        lineR.setFillColor(sf::Color::Green);
+        lineI.setFillColor(sf::Color::Red);
+        legend.setPosition(widthG-legend_box.x-2,2);
+        legend.setFillColor(sf::Color::White);
+        legend.setOutlineThickness(2);
+        legend.setOutlineColor(sf::Color::Black);
+        y_arrow.setPosition(50,50);
         y_arrow.setFillColor(sf::Color::Black);
         y_arrow.setRotation(45);
-        y_arrow1.setPosition(50,30);
+        y_arrow1.setPosition(50,50);
         y_arrow1.setRotation(-45);
         y_arrow1.setFillColor(sf::Color::Black);
         x_arrow.setPosition(widthG-18,heightG-64);
@@ -246,7 +274,7 @@ public:
         x_arrow1.setRotation(-45);
         Xaxis.setPosition(50, heightG - 50);
         Xaxis.setFillColor(sf::Color::Black);
-        Yaxis.setPosition(50,30);
+        Yaxis.setPosition(50,50);
         Yaxis.setFillColor(sf::Color::Black);
 
         g_window.clear(sf::Color::White);
@@ -256,28 +284,68 @@ public:
         {
             throw("COULD NOT LOAD THE FILE");
         }
+        sf::Text Xaxis_name("Days",font);
+        sf::Text Yaxis_name("Population",font);
         std::string n_day;
+        std::string pop_s;
+        sf::Text pop(pop_s,font);
+        sf::Text sus("Suscptible", font);
+        sf::Text rec("Recovered", font);
+        sf::Text inf("Infected", font);
+        sf::Text dead("Dead", font);
         sf::Text text(n_day,font);
-        text.setFont(font);
+        sf::Text leg("Legend:",font);
+        Xaxis_name.setStyle(sf::Text::Bold);
+        Xaxis_name.setPosition(widthG-45,heightG-25);
+        Xaxis_name.setCharacterSize(15);
+        Xaxis_name.setFillColor(sf::Color::Black);
+        Yaxis_name.setStyle(sf::Text::Bold);
+        Yaxis_name.setPosition(10,30);
+        Yaxis_name.setCharacterSize(15);
+        Yaxis_name.setFillColor(sf::Color::Black);
+        leg.setStyle(sf::Text::Bold);
+        leg.setPosition(widthG-306,3);
+        leg.setCharacterSize(15);
+        leg.setFillColor(sf::Color::Black);
+        dead.setStyle(sf::Text::Regular);
+        dead.setCharacterSize(13);
+        dead.setFillColor(sf::Color::Black);
+        dead.setPosition(widthG-298,20);
+        sus.setStyle(sf::Text::Regular);
+        sus.setCharacterSize(13);
+        sus.setFillColor(sf::Color::Blue);
+        sus.setPosition(widthG-226,20);
+        rec.setStyle(sf::Text::Regular);
+        rec.setCharacterSize(13);
+        rec.setFillColor(sf::Color::Green);
+        rec.setPosition(widthG-154,20);
+        inf.setStyle(sf::Text::Regular);
+        inf.setCharacterSize(13);
+        inf.setFillColor(sf::Color::Red);
+        inf.setPosition(widthG-72,20);
+        pop.setStyle(sf::Text::Bold);
+        pop.setCharacterSize(10);
+        pop.setFillColor(sf::Color::Black);
         text.setStyle(sf::Text::Bold);
         text.setCharacterSize(10);
         text.setFillColor(sf::Color::Black);
         std::vector<int> v_text;
+        std::vector<int> v_pop;
 
         sf::VertexArray curveS(sf::LineStrip, g_points.size());
         sf::VertexArray curveR(sf::LineStrip, g_points.size());
         sf::VertexArray curveI(sf::LineStrip, g_points.size());
         sf::VertexArray curveD(sf::LineStrip, g_points.size());
 
-        sf::CircleShape PointS(2 , 50);
-        sf::CircleShape PointR(2 , 50);
-        sf::CircleShape PointI(2 , 50);
+        sf::CircleShape PointS(2,50);
+        sf::CircleShape PointR(2,50);
+        sf::CircleShape PointI(2,50);
         sf::CircleShape PointD(2 , 50);
 
         PointS.setFillColor(sf::Color::Blue);
         PointR.setFillColor(sf::Color::Green);
         PointI.setFillColor(sf::Color::Red);
-        PointD.setFillColor(sf::Color::Purple);
+        PointD.setFillColor(sf::Color::Black);
 
         for (int a=0; a != g_points.size(); a++)
         {
@@ -290,22 +358,22 @@ public:
             float day=50+round(a*(widthG-50)/g_points.size());
             //float g=50+round(a*(widthG-50)/g_points.size());
             auto point=g_points[a];
-            
+
             curveS[a].position=sf::Vector2f(day, point.sus);
             PointS.setPosition(day,point.sus-2);
             curveS[a].color=sf::Color::Blue;
-            
+
             curveR[a].position=sf::Vector2f(day, point.rec);
             PointR.setPosition(day,point.rec-2);
             curveR[a].color=sf::Color::Green;
-            
+
             curveI[a].position=sf::Vector2f(day, point.inf);
             PointI.setPosition(day,point.inf-2);
             curveI[a].color=sf::Color::Red;
-            
+
             curveD[a].position=sf::Vector2f(day, point.dead);
             PointD.setPosition(day,point.dead-2);
-            curveD[a].color=sf::Color::Purple;
+            curveD[a].color=sf::Color::Black;
             
             if(floor(c)==c)
             {
@@ -326,25 +394,75 @@ public:
             text.setString(n_day);  
             g_window.draw(text);
         }
-        /*
-        sf::RectangleShape box;
-        box.setPosition(heightG/2,widthG/2);
-        box.setFillColor(sf::Color::Cyan);
-        const sf::Vector2f size (350.f,250.f);
-        box.setSize(size);
-        g_window.draw(box);
-*/
+        
+        for(int y=0;y<=heightG-100;y=y+(250*x))
+        {
+            r++;
+            sf::Vector2f pos_pop(46,heightG-50-y);
+            sf::Vector2f pos_pop1(44,heightG-50-y);
+            sf::Vector2f p_pop(20,(heightG-50)-y);
+            pop_s=std::to_string(r*250);
+
+            if(r*0.25==floor(r*0.25))
+            {
+                pop.setString(pop_s);
+                pop.setPosition(p_pop);
+                pop_line1.setPosition(pos_pop1);
+                g_window.draw(pop_line1);
+                g_window.draw(pop);
+            }
+            else if(r*0.25!=floor(r*0.25))
+            {
+                pop.setString(pop_s);
+                pop.setPosition(p_pop);
+                pop_line.setPosition(pos_pop);
+                g_window.draw(pop_line);
+                g_window.draw(pop);
+            }
+        }
+       /*
+        std::vector<sf::RectangleShape> v_draw {legend,lineS,lineR,lineI,Yaxis,Xaxis,x_arrow,x_arrow1,y_arrow,y_arrow1};
+        for(int x=0; x<=v_draw.size();x++)
+        {
+            g_window.draw(v_draw[x]);
+        }
+        
+        std::vector<sf::Text> v_text_draw {leg,sus,rec,inf};
+        for(int x=0; x<=v_text_draw.size();x++)
+        {
+            g_window.draw(v_text_draw[x]);
+        }
+        
+        std::vector<sf::VertexArray> v_vertex_array {curveS,curveR,curveI};
+        for(int x=0;x<=v_vertex_array.size();x++)
+        {
+            g_window.draw(v_vertex_array[x]);
+        }
+        */
+
         g_window.draw(curveR);
         g_window.draw(curveI);
         g_window.draw(curveS);
         g_window.draw(curveD);
-    
+        g_window.draw(legend);
+        g_window.draw(leg);
+        g_window.draw(sus);
+        g_window.draw(rec);
+        g_window.draw(inf);
+        g_window.draw(dead);
+        g_window.draw(lineS);
+        g_window.draw(lineR);
+        g_window.draw(lineI);
+        g_window.draw(lineD);    
         g_window.draw(Xaxis);
         g_window.draw(Yaxis);
+        g_window.draw(Xaxis_name);
+        g_window.draw(Yaxis_name);
         g_window.draw(x_arrow);
         g_window.draw(x_arrow1);
         g_window.draw(y_arrow);
         g_window.draw(y_arrow1);
+        
         g_window.display();
     }
 
@@ -392,17 +510,19 @@ public:
         sf::Event event;
 
         m_window.waitEvent(event);
-        while (event.type != sf::Event::KeyPressed)
+        if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         {
-            if (event.key.code == sf::Keyboard::Escape)
-            {
-                return true;
-            }
-            else if (event.key.code==sf::Keyboard::Q)
-            {
-                return false;
-            }
+            return false;
         }
+        else if(event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::Escape)
+        {
+            return true;
+        }
+        else
+        {
+            return true;
+        }
+        
     }
     
 
@@ -421,84 +541,92 @@ public:
             }
         }
     }
+    void closing_click()
+    {
+        sf::Event _event;
+        m_window.waitEvent(_event);
+
+        while(_event.key.code!=sf::Keyboard::Escape)
+        {
+            m_window.waitEvent(_event);
+            
+            if(_event.key.code==sf::Keyboard::Escape)
+            {
+                std::cout<<'b'<<'\n';
+                break;
+            }
+        }
+    }
+
+    void show_instructions(Board const& board)
+    {
+        const sf::Vector2f dim_box((m_board_side * cell_size)*0.8,(m_board_side * cell_size)*0.6);
+        sf::RectangleShape box(dim_box);
+        box.setPosition(80,80);
+        m_window.clear(sf::Color::White);
+        
+        sf::Texture t_box;
+        t_box.loadFromFile("/tmp/mozilla_tasso0/info_text-2.jpg");
+        if((t_box.loadFromFile("/tmp/mozilla_tasso0/info_text-2.jpg")))
+        {
+            std::cout<<'8'<<'\n';
+        }
+        
+        box.setFillColor(sf::Color::White);
+        box.setTexture(&t_box);
+        m_window.draw(box);
+        m_window.display();
+
+    }
 
     void click(Board &board)
     {
-        //sf::Event e;
-        //m_window.waitEvent(e);
-        
+        std::cout<<'q'<<'\n';
         sf::Vector2i mouse;
-        while(m_window.isOpen())
+        sf::Event e;
+        m_window.waitEvent(e);
+        while (e.type!=sf::Event::MouseButtonPressed)
         {
-            sf::Event e;
-            while(m_window.pollEvent(e))
+            while(e.key.code != sf::Mouse::Left)
             {
-                switch(e.type)
+                m_window.waitEvent(e);
+                if(e.key.code == sf::Mouse::Left)
                 {
-                    case sf::Event::MouseButtonPressed :
-                    std::cout<<"diomerda"<<'\n';
-                    switch(e.key.code)
+                    mouse=sf::Mouse::getPosition(m_window);
+                    if(mouse.x<0 || mouse.y<0 || mouse.x>(m_board_side*cell_size) ||mouse.y>(m_board_side*cell_size))
+                    std::cout<<mouse.x<<' '<<mouse.y<<'\n';
+                    for (int i = 0; i != m_board_side; ++i)
                     {
-                        case sf::Mouse::Left :
-                        std::cout<<"premuto left"<<'\n';
-                        mouse=sf::Mouse::getPosition(m_window);
-                        std::cout<<mouse.x<<' '<<mouse.y<<'\n';
-                        for (int i = 0; i != m_board_side; ++i)
+                        std::cout<<"o ";
+                        if((i*10)<mouse.x && ((i+1)*10)>mouse.x)
+                        {
+                            std::cout<<'1'<<'\n';
+                            for (int j = 0; j != m_board_side; ++j)
                             {
-                            if((i*10)<mouse.x && ((i+1)*10)>mouse.x)
-                            {
-                                std::cout<<'1'<<'\n';
-                                for (int j = 0; j != m_board_side; ++j)
+                                if((j*10)<mouse.y && ((j+1)*10)>mouse.y)
                                 {
-                                    if((j*10)<mouse.y && ((j+1)*10)>mouse.y)
+                                    std::cout<<'2'<<'\n';
+                                    board(i,j)=State::Inf;
+                                    if(board(i,j)==State::Inf)
                                     {
-                                        std::cout<<'2'<<'\n';
-                                        board(i,j)=State::Inf;
-                                        if(board(i,j)==State::Inf)
-                                        {
-                                            std::cout<<'3'<<'\n';
-                                        }
+                                        std::cout<<'3'<<'\n';
                                     }
                                 }
                             }
                         }
-                        break;
                     }
-                    break;
                 }
-                
             }
-            break;
         }
-
+        std::cout<<'z'<<'\n';    
     }
-/*
-    Board choose(Board board)
-    {
-        sf::Vector2i mouse = click();
 
-        for (int i = 0; i != m_board_side; ++i)
-            {
-                if(i*10<mouse.x && (i+1)*10>mouse.x)
-                {
-                    for (int j = 0; j != m_board_side; ++j)
-                    {
-                        if(j*10<mouse.y && (j+1)*10>mouse.y)
-                        {
-                            board(i,j)=State::Inf;
-                        }
-                    }
-                }
-            }
-        return board;
-    }
     
-*/
-
+    
     int draw(Board const &board)
     {
         const sf::Vector2f cell_vector = sf::Vector2f(cell_size, cell_size);
-
+        sf::RectangleShape cell1(cell_vector);
         sf::RectangleShape cell(cell_vector);
         cell.setOutlineThickness(1);
         cell.setOutlineColor(sf::Color::Black);
@@ -523,10 +651,32 @@ public:
                 {
                     cell.setFillColor(sf::Color::Green);
                 }
+                if(board(i,j)== State::Dead)
+                {
+                    cell.setFillColor(sf::Color::Black);
+                }
                 m_window.draw(cell);
+                
             }
         }
-
+        for (int i = 0; i != m_board_side; ++i)
+        {
+            for (int j = 0; j != m_board_side; ++j)
+            {
+                if(board(i,j)==State::Dead)
+                {
+                    sf::RectangleShape cell1(cell_vector);
+                    cell1.setPosition(i * cell_size, j * cell_size);
+                    cell1.setOutlineThickness(1);
+                    cell1.setOutlineColor(sf::Color::Black);
+                    sf::Texture t_dead;
+                    t_dead.loadFromFile("/home/tasso/Downloads/dead.png");
+                    cell.setFillColor(sf::Color::White);
+                    cell1.setTexture(&t_dead);
+                    m_window.draw(cell1);
+                }
+            }
+        }
         m_window.display();
         return 0;
     }
@@ -535,37 +685,63 @@ public:
 int main()
 {
     int dim = 40;
-    int b = 6;
+    int b = 15;
     int a;
     Board board(dim);
     std::vector<Points> g_points;
+    Display display1(dim);
+    display1.show_instructions(board);
+    display1.closing();
     Display display(dim);
-    display.draw(board);
-    for(a=1;a<=b;a++)
-    {
-        display.click(board);
-        display.draw(board);
-    }
-    //board.click(board);
+
+    //std::cout<<countS(board)<<'\n';
+    //display.draw_info();
     //display.draw(board);
+    //for(a=0; a!=b; a++)
     /*
+    while(true)
+    {
+        display.wait_key_pressed();
+        display.click(board);
+        std::cout<<"click fatta"<<'\n';
+        display.draw(board);
+        std::cout<<"draw fatta"<<'\n';
+        if(display.stop_selection())
+        {
+            break;
+        }
+        else
+        {
+        }
+        
+    }
+    */
     board(0, 39) = State::Inf;
     board(11, 17) = State::Inf;
     board(2, 2) = State::Inf;
     board(13,16) = State::Inf;
     board(3, 9) = State::Inf;
     board(14, 15) = State::Inf;
-    board(14, 39) = State::Inf;
-    */
+    board(25, 39) = State::Inf;
+    board(1, 3) = State::Inf;
+    board(16, 9) = State::Inf;
+    board(27, 25) = State::Inf;
+    board(2, 4) = State::Inf;
+    
+    display.draw(board);
+    //std::cout<<countS(board)<<'\n';
+    
     g_points.push_back(set_points(board));
-
+    
     display.wait_key_pressed();
+    display.draw(board);
 
     while (true)
     {
         a++;
-        board = evolve(board, 0.4, 0.8);
+        board = evolve(board, 0.8, 0.2,0.5);
         display.draw(board);
+        //std::cout<<countS(board)<<'\n';
         g_points.push_back(set_points(board));
         std::this_thread::sleep_for(std::chrono::milliseconds(800));
         
