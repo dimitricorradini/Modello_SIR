@@ -8,6 +8,9 @@
 
 namespace SIR{
 
+static constexpr int heightG = 700;
+static constexpr int widthG = 700;    
+    
 struct Points
 {
     float sus;
