@@ -579,14 +579,16 @@ public:
 
     }
 
-        void click(Board &board)
+    void click(Board &board)
     {
         std::cout<<'q'<<'\n';
         sf::Vector2i mouse;
         sf::Event e;
         m_window.waitEvent(e);
-        while(e.key.code!=sf::Keyboard::Escape)
+        bool f=true;
+        while(f)
         {
+            m_window.waitEvent(e);
             while(e.key.code != sf::Mouse::Left && e.key.code!=sf::Keyboard::Escape)
             {
                 std::cout<<'s'<<'\n';
@@ -618,8 +620,13 @@ public:
                         }
                     }
                 }
+                if(e.key.code==sf::Keyboard::S)
+                {
+                    f=false;
+                }
             }
             std::cout<<'z'<<'\n';
+            
         }  
     }
 
