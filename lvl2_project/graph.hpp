@@ -14,9 +14,6 @@ class Graph
     static constexpr auto g_window_title = "Trend";
     std::vector<Points> g_points;
 
-    static constexpr int heightG = 700;
-    static constexpr int widthG = 700;
-
 public:
     Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close}, g_points(0) {}
 
