@@ -1,6 +1,7 @@
 #ifndef SIR_BOARD_HPP
 #define SIR_BOARD_HPP
 
+#include <iostream>
 #include <cassert>
 #include <vector>
 #include <random>
