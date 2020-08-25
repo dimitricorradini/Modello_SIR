@@ -31,7 +31,7 @@ public:
     State &operator()(int i, int j)
     {
         assert(i >= 0 && i < m_side && j >= 0 && j < m_side);
-        return board_[i * m_side + j];
+        return m_board[i * m_side + j];
     }
 
     int size() const { return m_side; }
