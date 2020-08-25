@@ -109,7 +109,7 @@ public:
             g_window.draw(PointR);
             g_window.draw(PointI);
         }
-        for(int b=0; b!=v_text.size(); b++)
+        for(unsigned int b=0; b!=v_text.size(); b++)
         {
             n_day=std::to_string(v_text[b]);
             float day1= 50+5*round(b*(widthG-50)/g_points.size());
