@@ -44,6 +44,6 @@ int main()
     graph.wait_key_pressed();
     //graph.dra();
     //graph.text_instructions();
-    graph.draw(board, g_points);
+    graph.draw(g_points);
     graph.closing();
 }
