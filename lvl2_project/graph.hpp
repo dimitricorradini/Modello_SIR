@@ -47,7 +47,7 @@ public:
         }
     }
 
-    void draw(Board const &board, std::vector<Points> g_points)
+    void draw(std::vector<Points>& g_points)
     { 
 
         const sf::Vector2f dimXaxis (widthG, 2);
@@ -100,7 +100,7 @@ public:
             PointI.setPosition(day,point.inf-2);
             curveI[a].color=sf::Color::Red;
             
-            if(floor(c)==c)
+            if(a%5==0)
             {
                 v_text.push_back(a);
             }
