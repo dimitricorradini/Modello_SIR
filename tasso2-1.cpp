@@ -579,16 +579,17 @@ public:
 
     }
 
-    void click(Board &board)
+        void click(Board &board)
     {
         std::cout<<'q'<<'\n';
         sf::Vector2i mouse;
         sf::Event e;
         m_window.waitEvent(e);
-        while (e.type!=sf::Event::MouseButtonPressed)
+        while(e.key.code!=sf::Keyboard::Escape)
         {
-            while(e.key.code != sf::Mouse::Left)
+            while(e.key.code != sf::Mouse::Left && e.key.code!=sf::Keyboard::Escape)
             {
+                std::cout<<'s'<<'\n';
                 m_window.waitEvent(e);
                 if(e.key.code == sf::Mouse::Left)
                 {
@@ -607,6 +608,7 @@ public:
                                 {
                                     std::cout<<'2'<<'\n';
                                     board(i,j)=State::Inf;
+                                    draw(board);
                                     if(board(i,j)==State::Inf)
                                     {
                                         std::cout<<'3'<<'\n';
@@ -617,8 +619,8 @@ public:
                     }
                 }
             }
-        }
-        std::cout<<'z'<<'\n';    
+            std::cout<<'z'<<'\n';
+        }  
     }
 
     
@@ -693,29 +695,21 @@ int main()
     display1.show_instructions(board);
     display1.closing();
     Display display(dim);
-
+    display.draw(board);
     //std::cout<<countS(board)<<'\n';
     //display.draw_info();
     //display.draw(board);
     //for(a=0; a!=b; a++)
-    /*
-    while(true)
-    {
-        display.wait_key_pressed();
+
         display.click(board);
-        std::cout<<"click fatta"<<'\n';
+        //std::cout<<"click fatta"<<'\n';
+        /*
         display.draw(board);
         std::cout<<"draw fatta"<<'\n';
-        if(display.stop_selection())
-        {
-            break;
-        }
-        else
-        {
-        }
-        
-    }
-    */
+*/
+
+
+    /*
     board(0, 39) = State::Inf;
     board(11, 17) = State::Inf;
     board(2, 2) = State::Inf;
@@ -727,8 +721,8 @@ int main()
     board(16, 9) = State::Inf;
     board(27, 25) = State::Inf;
     board(2, 4) = State::Inf;
+    */
     
-    display.draw(board);
     //std::cout<<countS(board)<<'\n';
     
     g_points.push_back(set_points(board));
@@ -759,5 +753,4 @@ int main()
     //graph.text_instructions();
     graph.draw(board, g_points);
     graph.closing();
-   
 }
