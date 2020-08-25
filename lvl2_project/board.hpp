@@ -1,4 +1,4 @@
-#infndef SIR_BOARD_HPP
+#ifndef SIR_BOARD_HPP
 #define SIR_BOARD_HPP
 
 #include <cassert>
