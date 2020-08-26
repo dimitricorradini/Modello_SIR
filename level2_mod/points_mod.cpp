@@ -18,22 +18,6 @@ namespace SIR
     float dead;
   };
 
-  int countI(Board const &board)
-  {
-    int inf_ = 0;
-    for (int l = 1; l <= board.size()-1; ++l)
-    {
-      for (int j = 1; j <= board.size()-1; ++j)
-      {
-        if (board(l, j) == State::Inf)
-        {
-          ++inf_;
-        }
-      }
-    }
-    return inf_;
-  }
-
   inline Points set_points(Board const &board)
   {
     Points p;
@@ -79,7 +63,7 @@ namespace SIR
     p_graph.dead = heightG-50-round(p.dead*x);
 
     return p_graph;
-  }
+  };
 }
 
 #endif
