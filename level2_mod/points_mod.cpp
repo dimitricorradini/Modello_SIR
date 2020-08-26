@@ -63,7 +63,7 @@ namespace SIR
     p_graph.dead = heightG-50-round(p.dead*x);
 
     return p_graph;
-  };
+  }
 }
 
 #endif
