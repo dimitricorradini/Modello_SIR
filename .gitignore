@@ -34,3 +34,7 @@
 #Desktop MacOS files
 
 *.DS_Store
+
+#Cmake build directories
+
+*/build
