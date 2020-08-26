@@ -41,7 +41,7 @@ public:
     int size() const { return n_; }
 };
 
-Board evolve(Board const &current, double const& beta, double const& gamma, double const& mu)
+Board evolve(Board const &current, double const beta, double const gamma, double const mu)
 {
     // add exception for value of beta, gamma
     if (beta > 1 || (gamma+mu) > 1 || beta < 0 || gamma < 0 || mu < 0)
