@@ -223,6 +223,7 @@ namespace SIR
         g_window.draw(PointI);
         g_window.draw(PointD);
       }
+
       for(unsigned int b = 0; b != v_text.size(); b++)
       {
         
@@ -233,6 +234,7 @@ namespace SIR
         text.setString(n_day);  
         g_window.draw(text);
       }
+      
       for(int y = 0; y <= heightG-100; y += (250*x))
       {
         r++;

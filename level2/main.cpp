@@ -22,7 +22,6 @@ int main()
   g_points.push_back(SIR::set_points(board));
 
   display.draw(board);
-
   
   while (true)
   {
@@ -39,11 +38,9 @@ int main()
   display.closing();
 
   SIR::Graph graph;
-  //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
   graph.wait_key_pressed();
   graph.draw(board, g_points);
   graph.closing();
-  std::cout<<"Thanks for playing!!"<<'\n';
+  std::cout << "Thanks for playing!!" << '\n';
 }
-
