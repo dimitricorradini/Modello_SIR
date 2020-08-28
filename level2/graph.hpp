@@ -39,8 +39,8 @@ namespace SIR
 
       const sf::Vector2f dimXaxis (widthG-55, 2);
       const sf::Vector2f dimYaxis (2, heightG-100);
-      const sf::Vector2f arrow (20, 2);
-      const sf::Vector2f arrow1 (2,20);
+      const sf::Vector2f arrow (10, 2);
+      const sf::Vector2f arrow1 (2,10);
       const sf::Vector2f legend_box(310,45);
       const sf::Vector2f lines(30,2);
       const sf::Vector2f p_line(8,1);
@@ -85,12 +85,12 @@ namespace SIR
       y_arrow1.setRotation(-30);
       y_arrow1.setFillColor(sf::Color::Black);
 
-      x_arrow.setPosition(widthG-18,heightG-64);
+      x_arrow.setPosition(widthG-11,heightG-55);
       x_arrow.setFillColor(sf::Color::Black);
       x_arrow.setRotation(30);
 
       x_arrow1.setFillColor(sf::Color::Black);
-      x_arrow1.setPosition(widthG-19,heightG-36);
+      x_arrow1.setPosition(widthG-11,heightG-45);
       x_arrow1.setRotation(-30);
 
       Xaxis.setPosition(50, heightG - 50);
@@ -171,10 +171,10 @@ namespace SIR
       sf::VertexArray curveI(sf::TriangleStrip, 2*g_points.size());
       sf::VertexArray curveD(sf::TriangleStrip, 2*g_points.size());
 
-      sf::CircleShape PointS(4,50);
-      sf::CircleShape PointR(4,50);
-      sf::CircleShape PointI(4,50);
-      sf::CircleShape PointD(4,50);
+      sf::CircleShape PointS(3,50);
+      sf::CircleShape PointR(3,50);
+      sf::CircleShape PointI(3,50);
+      sf::CircleShape PointD(3,50);
 
       PointS.setFillColor(sf::Color::Blue);
       PointR.setFillColor(sf::Color::Green);
