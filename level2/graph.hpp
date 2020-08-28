@@ -17,16 +17,6 @@ namespace SIR
     public:
     Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close} {}
 
-    void wait_key_pressed()
-    {
-      sf::Event event;
-      g_window.waitEvent(event);
-      while (event.key.code != sf::Keyboard::S)
-      {
-          g_window.waitEvent(event);
-      }
-    }
-
     void closing()
     {
       sf::Event e;
