@@ -13,10 +13,9 @@ namespace SIR
     private:
     sf::RenderWindow g_window;
     static constexpr auto g_window_title = "Trend";
-    std::vector<Points> g_points;
 
     public:
-    Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close}, g_points(0) {}
+    Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close} {}
 
     void wait_key_pressed()
     {
@@ -90,19 +89,19 @@ namespace SIR
 
       y_arrow.setPosition(50,50);
       y_arrow.setFillColor(sf::Color::Black);
-      y_arrow.setRotation(45);
+      y_arrow.setRotation(30);
 
       y_arrow1.setPosition(50,50);
-      y_arrow1.setRotation(-45);
+      y_arrow1.setRotation(-30);
       y_arrow1.setFillColor(sf::Color::Black);
 
       x_arrow.setPosition(widthG-18,heightG-64);
       x_arrow.setFillColor(sf::Color::Black);
-      x_arrow.setRotation(45);
+      x_arrow.setRotation(30);
 
       x_arrow1.setFillColor(sf::Color::Black);
       x_arrow1.setPosition(widthG-19,heightG-36);
-      x_arrow1.setRotation(-45);
+      x_arrow1.setRotation(-30);
 
       Xaxis.setPosition(50, heightG - 50);
       Xaxis.setFillColor(sf::Color::Black);
@@ -177,15 +176,15 @@ namespace SIR
       std::vector<int> v_text;
       std::vector<int> v_pop;
 
-      sf::VertexArray curveS(sf::LineStrip, g_points.size());
-      sf::VertexArray curveR(sf::LineStrip, g_points.size());
-      sf::VertexArray curveI(sf::LineStrip, g_points.size());
-      sf::VertexArray curveD(sf::LineStrip, g_points.size());
+      sf::VertexArray curveS(sf::TriangleStrip, 2*g_points.size());
+      sf::VertexArray curveR(sf::TriangleStrip, 2*g_points.size());
+      sf::VertexArray curveI(sf::TriangleStrip, 2*g_points.size());
+      sf::VertexArray curveD(sf::TriangleStrip, 2*g_points.size());
 
-      sf::CircleShape PointS(2,50);
-      sf::CircleShape PointR(2,50);
-      sf::CircleShape PointI(2,50);
-      sf::CircleShape PointD(2 , 50);
+      sf::CircleShape PointS(4,50);
+      sf::CircleShape PointR(4,50);
+      sf::CircleShape PointI(4,50);
+      sf::CircleShape PointD(4,50);
 
       PointS.setFillColor(sf::Color::Blue);
       PointR.setFillColor(sf::Color::Green);
@@ -197,22 +196,30 @@ namespace SIR
         float day = 50+round(a*(widthG-50)/g_points.size());
         auto point = g_points[a];
 
-        curveS[a].position = sf::Vector2f(day, point.sus);
+        curveS[2*a].position = sf::Vector2f(day, point.sus);
+        curveS[2*a+1].position = sf::Vector2f(day, point.sus+3);
         PointS.setPosition(day,point.sus-2);
-        curveS[a].color = sf::Color::Blue;
+        curveS[2*a].color = sf::Color::Blue;
+        curveS[2*a+1].color = sf::Color::Blue;
 
-        curveR[a].position = sf::Vector2f(day, point.rec);
+        curveR[2*a].position = sf::Vector2f(day, point.rec);
+        curveR[2*a+1].position = sf::Vector2f(day, point.rec+3);
         PointR.setPosition(day,point.rec-2);
-        curveR[a].color = sf::Color::Green;
+        curveR[2*a].color = sf::Color::Green;
+        curveR[2*a+1].color = sf::Color::Green;
 
-        curveI[a].position = sf::Vector2f(day, point.inf);
+        curveI[2*a].position = sf::Vector2f(day, point.inf);
+        curveI[2*a+1].position = sf::Vector2f(day, point.inf+3);
         PointI.setPosition(day,point.inf-2);
-        curveI[a].color = sf::Color::Red;
+        curveI[2*a].color = sf::Color::Red;
+        curveI[2*a+1].color = sf::Color::Red;
 
-        curveD[a].position = sf::Vector2f(day, point.dead);
+        curveD[2*a].position = sf::Vector2f(day, point.dead);
+        curveD[2*a+1].position = sf::Vector2f(day, point.dead+3);
         PointD.setPosition(day,point.dead-2);
-        curveD[a].color = sf::Color::Black;
-            
+        curveD[2*a].color = sf::Color::Black;
+        curveD[2*a+1].color = sf::Color::Black;
+
         if(a % 5 == 0)
         {
           v_text.push_back(a);
@@ -265,6 +272,7 @@ namespace SIR
       g_window.draw(curveI);
       g_window.draw(curveS);
       g_window.draw(curveD);
+
       g_window.draw(legend);
       g_window.draw(leg);
       g_window.draw(sus);
@@ -274,7 +282,8 @@ namespace SIR
       g_window.draw(lineS);
       g_window.draw(lineR);
       g_window.draw(lineI);
-      g_window.draw(lineD);    
+      g_window.draw(lineD); 
+         
       g_window.draw(Xaxis);
       g_window.draw(Yaxis);
       g_window.draw(Xaxis_name);
