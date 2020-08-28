@@ -1,2 +1,1 @@
-# Modello_SIR
-Bella raga
+Dobbiamo inserire testo dalla relazione

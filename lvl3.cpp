@@ -132,7 +132,6 @@ class Person{
   sf::RenderWindow m_window;
   static constexpr dot_size=10;
   static constexpr auto s_window_title = "Virus simulation";
-
   public:
     Display(): m_window{
       sf::VideoMode(boardwidth, boardwidth),
@@ -142,7 +141,6 @@ class Person{
 void wait_key_pressed()
     {
         sf::Event event;
-
         m_window.waitEvent(event);
         while (event.type != sf::Event::KeyPressed)
         {
@@ -152,12 +150,10 @@ void wait_key_pressed()
             }
         }
     }
-
     void closing()
     {
         sf::Event e;
         m_window.waitEvent(e);
-
         while(e.key.code!=sf::Keyboard::E)
         {
             m_window.waitEvent(e);
@@ -168,7 +164,6 @@ void wait_key_pressed()
             }
         }
     }
-
     int draw (std::vector<person> population){
       sf::CircleShape dotperson(dot_size);
       m_window.clear(sf::Color::Black);
