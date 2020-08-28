@@ -38,7 +38,6 @@ namespace SIR
   };
 
   Board evolve(Board const &current, double const beta, double const gamma, double const mu);
-  
 }
 
 #endif

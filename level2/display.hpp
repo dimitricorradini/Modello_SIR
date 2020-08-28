@@ -2,7 +2,6 @@
 #define SIR_DISPLAY_HPP
 
 #include <SFML/Graphics.hpp>
-//#include "board.hpp"
 
 namespace SIR
 {
