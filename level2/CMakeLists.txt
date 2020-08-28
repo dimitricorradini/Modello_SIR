@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 project(SIR CXX)
 
@@ -11,7 +11,7 @@ set(CMAKE_CXX_EXTENSIONS        OFF)
 list(APPEND CMAKE_MODULE_PATH /usr/share/SFML/cmake/Modules)
 find_package(SFML COMPONENTS graphics window system REQUIRED)
 
-add_executable(SIR main.cpp board.cpp display.cpp points.cpp)
+add_executable(SIR main.cpp board.cpp display.cpp points.cpp graph.cpp)
 target_compile_options(SIR PRIVATE -Wall -Wextra -fsanitize=address -O3)
 target_include_directories(SIR PRIVATE ${SFML_INCLUDE_DIR})
 target_link_options(SIR PRIVATE -fsanitize=address)
