@@ -208,7 +208,7 @@ namespace SIR
 			m_window.draw(cell);
 		  }
 		  if (board(i, j) == State::Dead)
-		  {;
+		  {
 			cell1.setPosition(i * cell_side, j * cell_side);
 			cell1.setFillColor(sf::Color::White);
 			cell1.setTexture(&t_dead);
