@@ -18,7 +18,7 @@ namespace SIR
     float dead;
   };
 
-  inline int countI(Board const &board)
+  /*inline int countInf(Board const &board)
   {
     int inf_ = 0;
     for (int l = 1; l <= board.side()-1; ++l)
@@ -32,23 +32,15 @@ namespace SIR
       }
     }
     return inf_;
-  }
+  }*/
 
-  inline Points set_points(Board const &board)
+  inline Points count(Board const &board)
   {
     Points p;
-    Points p_graph;
-    p_graph.inf = 0.f;
-    p_graph.rec = 0.f;
-    p_graph.sus = 0.f;
-    p_graph.dead = 0.f;
     p.sus = 0.f;
     p.rec = 0.f;
     p.inf = 0.f;
     p.dead = 0.f;
-
-    double const d = board.side() * board.side();
-    double const x = (heightG-80)/d;
     
     for (int l = 1; l <= board.side()-1; ++l)
     {
@@ -73,10 +65,24 @@ namespace SIR
       }
     }
 
-    p_graph.sus = heightG-50-round(p.sus*x);
-    p_graph.rec = heightG-50-round(p.rec*x);
-    p_graph.inf = heightG-50-round(p.inf*x);
-    p_graph.dead = heightG-50-round(p.dead*x);
+    return p;
+  }
+
+  inline Points convert(Board const& board, Points const& point)
+  {
+    Points p_graph;
+    p_graph.inf = 0.f;
+    p_graph.rec = 0.f;
+    p_graph.sus = 0.f;
+    p_graph.dead = 0.f;
+
+    double const d = board.side() * board.side();
+    double const x = (heightG-80)/d;
+
+    p_graph.sus = heightG-50-round(point.sus*x);
+    p_graph.rec = heightG-50-round(point.rec*x);
+    p_graph.inf = heightG-50-round(point.inf*x);
+    p_graph.dead = heightG-50-round(point.dead*x);
 
     return p_graph;
   }

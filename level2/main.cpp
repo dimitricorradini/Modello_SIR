@@ -19,7 +19,9 @@ int main()
   display.click(board);
   display.draw(board);
 
-  g_points.push_back(SIR::set_points(board));
+  SIR::Points p = SIR::count(board);
+
+  g_points.push_back(SIR::convert(board, p));
 
   display.draw(board);
   
@@ -27,9 +29,10 @@ int main()
   {
     board = SIR::evolve(board, 0.6, 0.4, 0.1);
     display.draw(board);
-    g_points.push_back(SIR::set_points(board));
-    std::this_thread::sleep_for(std::chrono::milliseconds(800));
-    if (SIR::countI(board)==0)
+    p = SIR::count(board);
+    g_points.push_back(SIR::convert(board, p));
+    std::this_thread::sleep_for(std::chrono::milliseconds(800)); 
+    if (p.inf == 0)
     {
       break;
     }
