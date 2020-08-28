@@ -72,7 +72,7 @@ namespace SIR
 	  	box.setPosition(50, 50);
 
 	  	sf::Font font;
-	  	font.loadFromFile("../../utilities/arial.ttf");
+	  	font.loadFromFile("../utilities/arial.ttf");
 	  	sf::Text quest("   Welcome to our pandemic simulator! ", font);
 	  	quest.setFillColor(sf::Color::Black);
 	  	quest.setCharacterSize(15);
@@ -183,7 +183,7 @@ namespace SIR
     	cell1.setOutlineThickness(1);
 	  	cell1.setOutlineColor(sf::Color::Black);
 	  	sf::Texture t_dead;
-	  	t_dead.loadFromFile("../../utilities/dead.png");
+	  	t_dead.loadFromFile("../utilities/dead.png");
 	  	m_window.clear(sf::Color::White);
 
 	  	for (int i = 0; i != m_board_side; ++i)

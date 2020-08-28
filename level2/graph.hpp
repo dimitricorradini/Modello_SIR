@@ -101,7 +101,7 @@ namespace SIR
       g_window.clear(sf::Color::White);
 
       sf::Font font;
-      if(!font.loadFromFile("../../utilities/arial.ttf"))
+      if(!font.loadFromFile("../utilities/arial.ttf"))
       {
         throw("COULD NOT LOAD FONT FILE");
       }
@@ -113,7 +113,7 @@ namespace SIR
       std::string pop_s;
 
       sf::Text pop(pop_s,font);
-      sf::Text sus("Suscptible", font);
+      sf::Text sus("Susceptible", font);
       sf::Text rec("Recovered", font);
       sf::Text inf("Infected", font);
       sf::Text dead("Deceased", font);

@@ -18,22 +18,6 @@ namespace SIR
     float dead;
   };
 
-  /*inline int countInf(Board const &board)
-  {
-    int inf_ = 0;
-    for (int l = 1; l <= board.side()-1; ++l)
-    {
-      for (int j = 1; j <= board.side()-1; ++j)
-      {
-        if (board(l, j) == State::Inf)
-        {
-          ++inf_;
-        }
-      }
-    }
-    return inf_;
-  }*/
-
   inline Points count(Board const &board)
   {
     Points p;
