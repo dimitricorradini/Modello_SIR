@@ -16,3 +16,10 @@ target_compile_options(SIR PRIVATE -Wall -Wextra -fsanitize=address -O3)
 target_include_directories(SIR PRIVATE ${SFML_INCLUDE_DIR})
 target_link_options(SIR PRIVATE -fsanitize=address)
 target_link_libraries(SIR PRIVATE ${SFML_LIBRARIES})
+
+add_executable(run_points_tests run_tests.cpp points.test.cpp points.cpp board.cpp)
+add_test(NAME point_tests COMMAND run_point_tests)
+
+add_executable(run_board_tests run_tests.cpp board.test.cpp points.cpp board.cpp)
+add_test(NAME regression_tests COMMAND run_regression_tests)
+
