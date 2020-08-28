@@ -19,12 +19,12 @@ namespace SIR
 
     void closing()
     {
-      sf::Event e;
-      g_window.waitEvent(e);
-      while(e.type != sf::Event::Closed)
+      sf::Event close2;
+      g_window.waitEvent(close2);
+      while(close2.type != sf::Event::Closed)
       {
-        g_window.waitEvent(e);
-        if(e.type == sf::Event::Closed)
+        g_window.waitEvent(close2);
+        if(close2.type == sf::Event::Closed)
         {
           g_window.close();
         }

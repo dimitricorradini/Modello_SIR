@@ -30,25 +30,25 @@ namespace SIR
 
 		void wait_key_pressed()
 		{
-	  	sf::Event event;
-	  	m_window.waitEvent(event);
-	  	while (event.type != sf::Event::KeyPressed)
+	  	sf::Event wait_key;
+	  	m_window.waitEvent(wait_key);
+	  	while (wait_key.type != sf::Event::KeyPressed)
 	  	{
-	    	if (event.key.code != sf::Keyboard::Escape)
+	    	if (wait_key.key.code != sf::Keyboard::Escape)
 				{
-		 	  	m_window.waitEvent(event);
+		 	  	m_window.waitEvent(wait_key);
 				}
 	  	}
 		}
 
 		void closing()
 		{
-	  	sf::Event e;
-	  	m_window.waitEvent(e);
-	  	while (e.key.code != sf::Keyboard::Q)
+	  	sf::Event close1;
+	  	m_window.waitEvent(close1);
+	  	while (close1.key.code != sf::Keyboard::Q)
 	  	{
-	    	m_window.waitEvent(e);
-	    	if (e.key.code == sf::Keyboard::Q)
+	    	m_window.waitEvent(close1);
+	    	if (close1.key.code == sf::Keyboard::Q)
 				{
 		  		m_window.close();
 				}
@@ -57,8 +57,8 @@ namespace SIR
 
 		void show_instructions()
 		{
-	  	sf::Event ev;
-	  	m_window.waitEvent(ev);
+	  	sf::Event skip1;
+	  	m_window.waitEvent(skip1);
 
 	  	sf::Vector2f dim_box(300, 150);
 	  	sf::Vector2f dim_box1(300, 300);
@@ -90,10 +90,10 @@ namespace SIR
 	  	m_window.draw(quest_1);
 	  	m_window.display();
 
-	  	while (ev.key.code != sf::Keyboard::S)
+	  	while (skip1.key.code != sf::Keyboard::S)
 	  	{
-				m_window.waitEvent(ev);
-				if (ev.key.code == sf::Keyboard::S)
+				m_window.waitEvent(skip1);
+				if (skip1.key.code == sf::Keyboard::S)
 				{
 		 	 		m_window.clear(sf::Color::Black);
 		 	  	m_window.clear(sf::Color::Black);
@@ -108,13 +108,13 @@ namespace SIR
 				}
 	  	}
 
-	  	sf::Event e;
-	  	m_window.waitEvent(e);
+	  	sf::Event skip2;
+	  	m_window.waitEvent(skip2);
 
-	  	while (e.key.code != sf::Keyboard::Q)
+	  	while (skip2.key.code != sf::Keyboard::Q)
 	  	{
-				m_window.waitEvent(e);
-				if (e.key.code == sf::Keyboard::Q)
+				m_window.waitEvent(skip2);
+				if (skip2.key.code == sf::Keyboard::Q)
 				{
 		  		m_window.close();
 				}
@@ -124,14 +124,16 @@ namespace SIR
 		void click(Board &board)
 		{
     	sf::Vector2i mouse;
-	  	sf::Event e;
-	  	m_window.waitEvent(e);
-	  	while (e.key.code != sf::Keyboard::S)
+	  	sf::Event click;
+	  	m_window.waitEvent(click);
+	  	//while (e.type != sf::Event::KeyPressed) {
+	  	//(click.type != sf::Event::KeyPressed)
+	  	while (click.key.code != sf::Keyboard::S)
 	  	{
-				m_window.waitEvent(e);
-				if (e.type == sf::Event::MouseButtonPressed)
+				m_window.waitEvent(click);
+				if (click.type == sf::Event::MouseButtonPressed)
 				{
-		  		if (e.mouseButton.button == sf::Mouse::Button::Left)
+		  		if (click.mouseButton.button == sf::Mouse::Button::Left)
 		  		{
 						mouse = sf::Mouse::getPosition(m_window);
 						for (int i = 0; i != m_board_side; ++i)
@@ -149,7 +151,7 @@ namespace SIR
 			  			}
 						}
 					}
-	      	if (e.mouseButton.button == sf::Mouse::Button::Right)
+	      	if (click.mouseButton.button == sf::Mouse::Button::Right)
 		  		{
 						mouse = sf::Mouse::getPosition(m_window);
 						for (int i = 0; i != m_board_side; ++i)
@@ -168,7 +170,12 @@ namespace SIR
 						}
 		  		}
 				}
+				if (click.key.code == sf::Keyboard::S)
+				{
+					std::cout << "premuto tasti" << '\n';
+				}
 	  	}
+	  //}
 		}
 
 		int draw(Board const &board)

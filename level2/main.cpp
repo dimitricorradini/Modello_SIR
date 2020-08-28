@@ -8,7 +8,7 @@
 
 int main()
 {
-  int dim = 40;
+  int dim = 50;
   SIR::Board board(dim);
   std::vector<SIR::Points> g_points;
   SIR::Display display1(dim);
