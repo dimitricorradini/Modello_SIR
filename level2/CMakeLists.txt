@@ -21,5 +21,5 @@ add_executable(run_points_tests run_tests.cpp points.test.cpp points.cpp board.c
 add_test(NAME point_tests COMMAND run_point_tests)
 
 add_executable(run_board_tests run_tests.cpp board.test.cpp points.cpp board.cpp)
-add_test(NAME regression_tests COMMAND run_regression_tests)
+add_test(NAME board_tests COMMAND run_board_tests)
 
