@@ -30,7 +30,7 @@ namespace SIR
       } 
       if (side > 50)
       {
-        throw std::runtime_error{"Too big to fit on the screen"};
+        throw std::runtime_error{"Board too big to fit on the screen"};
       }
     }
 
