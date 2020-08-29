@@ -2,7 +2,7 @@
 #include <random>
 #include "board.hpp"
 
-SIR::Board SIR::evolve(SIR::Board const &current, double const beta, double const gamma, double const mu)
+SIR::Board SIR::evolve(SIR::Board const& current, double const beta, double const gamma, double const mu)
 {
 	if (beta > 1 || gamma > 1 || mu > 1 || beta < 0 || gamma < 0 || mu < 0)
 	{

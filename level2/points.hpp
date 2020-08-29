@@ -1,8 +1,6 @@
 #ifndef SIR_POINTS_HPP
 #define SIR_POINTS_HPP
 
-//#include "board.hpp"
-
 namespace SIR 
 {
   class Board;
@@ -12,13 +10,13 @@ namespace SIR
     
   struct Points
   {
-    float sus;
-    float rec;
-    float inf;
-    float dead;
+    int sus;
+    int rec;
+    int inf;
+    int dead;
   };
 
-  Points count(Board const &board);
+  Points count(Board const& board);
 
   Points convert(Board const& board, Points const& point);
 }

@@ -5,19 +5,19 @@
 
 void SIR::Graph::closing()
 {
-	sf::Event close2;
-	g_window.waitEvent(close2);
-	while(close2.type != sf::Event::Closed)
+	sf::Event close3;
+	g_window.waitEvent(close3);
+	while(close3.type != sf::Event::Closed)
 	{
-		g_window.waitEvent(close2);
-		if(close2.type == sf::Event::Closed)
+		g_window.waitEvent(close3);
+		if(close3.type == sf::Event::Closed)
 		{
 			g_window.close();
 		}
 	}
 }
 
-int SIR::Graph::draw(SIR::Board const& board, std::vector<Points> g_points)
+int SIR::Graph::draw(SIR::Board const& board, std::vector<Points>& g_points)
 { 
 	int r = -1;
 	double const d = board.side() * board.side();
@@ -87,10 +87,7 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points> g_points)
 	g_window.clear(sf::Color::White);
 
 	sf::Font font;
-	if(!font.loadFromFile("../utilities/arial.ttf"))
-	{
-		throw("COULD NOT LOAD FONT FILE");
-	}
+	font.loadFromFile("../utilities/arial.ttf");
 
 	sf::Text Xaxis_name("Days",font);
 	sf::Text Yaxis_name("Population",font);
@@ -269,6 +266,5 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points> g_points)
 	g_window.draw(y_arrow1);
 				
 	g_window.display();
-
 	return 0;
 }

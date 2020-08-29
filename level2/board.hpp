@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cassert>
+#include <iostream>
 
 namespace SIR 
 {
@@ -34,7 +35,7 @@ namespace SIR
       return (i >= 0 && i < m_side && j >= 0 && j < m_side) ? m_board[i * m_side + j] : State::Rec;
     }
 
-    State &operator()(int i, int j)
+    State& operator()(int i, int j)
     {
       assert(i >= 0 && i < m_side && j >= 0 && j < m_side);
       return m_board[i * m_side + j];
@@ -43,7 +44,7 @@ namespace SIR
     int side() const { return m_side; }
   };
 
-  Board evolve(Board const &current, double const beta, double const gamma, double const mu);
+  Board evolve(Board const& current, double const beta, double const gamma, double const mu);
 }
 
 #endif

@@ -20,7 +20,7 @@ namespace SIR
 
     void closing();
   
-    int draw(Board const &board, std::vector<Points> g_points);
+    int draw(Board const& board, std::vector<Points>& g_points);
   };
 }
 

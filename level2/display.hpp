@@ -13,19 +13,14 @@ namespace SIR
     int const m_board_side;
 	  sf::RenderWindow m_window;
 
-	  static constexpr int cell_side = 10;
-
-	  static int display_side(int board_side)
-	  {
-      return board_side * cell_side;
-	  }
+	  static constexpr int cell_side = 15;
 
 	  static constexpr auto s_window_title = "Virus simulation";
 
 	  public:
 	  Display(int board_side)
 	    : m_board_side{board_side}, m_window { 
-											  sf::VideoMode(display_side(board_side), display_side(board_side)),
+											  sf::VideoMode(m_board_side * cell_side, m_board_side * cell_side),
 											  s_window_title,
 											  sf::Style::Titlebar} {}
 
@@ -33,11 +28,9 @@ namespace SIR
 
 	  void closing();
 
-	  void show_instructions();
+	  void click(Board& board);
 
-	  void click(Board &board);
-
-    int draw(Board const &board);
+    int draw(Board const& board);
   };
 }
 

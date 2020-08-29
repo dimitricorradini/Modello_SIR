@@ -3,17 +3,17 @@
 #include "points.hpp"
 #include "board.hpp"
 
-SIR::Points SIR::count(SIR::Board const &board)
+SIR::Points SIR::count(SIR::Board const& board)
 {
 	Points p;
-	p.sus = 0.f;
-	p.rec = 0.f;
-	p.inf = 0.f;
-	p.dead = 0.f;
+	p.sus = 0;
+	p.rec = 0;
+	p.inf = 0;
+	p.dead = 0;
 		
-	for (int l = 1; l <= board.side()-1; ++l)
+	for (int l = 0; l < board.side(); ++l)
 	{
-		for (int j = 1; j <= board.side()-1; ++j)
+		for (int j = 0; j < board.side(); ++j)
 		{
 			if (board(l, j) == State::Susc)
 			{
@@ -39,10 +39,10 @@ SIR::Points SIR::count(SIR::Board const &board)
 SIR::Points SIR::convert(SIR::Board const& board, Points const& point)
 {
 	Points p_graph;
-	p_graph.inf = 0.f;
-	p_graph.rec = 0.f;
-	p_graph.sus = 0.f;
-	p_graph.dead = 0.f;
+	p_graph.inf = 0;
+	p_graph.rec = 0;
+	p_graph.sus = 0;
+	p_graph.dead = 0;
 
 	double const d = board.side() * board.side();
 	double const x = (heightG - 80) / d;
