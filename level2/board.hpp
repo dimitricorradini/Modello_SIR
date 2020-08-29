@@ -28,6 +28,10 @@ namespace SIR
       {
         throw std::runtime_error{"There is no population"};
       } 
+      if (side > 100)
+      {
+        throw std::runtime_error{"Too big to fit on the screen"};
+      }
     }
 
     State operator()(int i, int j) const
