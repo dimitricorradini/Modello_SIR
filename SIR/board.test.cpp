@@ -5,8 +5,8 @@
 
 TEST_CASE("Testing board")
 {
-	//CHECK_THROWS(SIR::Board empty_board);
-	//CHECK_THROWS(SIR::Board impossible_board(-30));
+	CHECK_THROWS(SIR::Board(0));
+	CHECK_THROWS(SIR::Board(-30));
   
   SIR::Board const board1(50);
   SIR::Board board2(40);
@@ -20,15 +20,11 @@ TEST_CASE("Testing board")
   CHECK(board1(0, tot1) == SIR::State::Rec);
   CHECK(board1(0, 4) == SIR::State::Susc);
 
-  //board1[201] = SIR::State::Inf;
-  //CHECK(board1(1, 4) == SIR::State::Inf);
-
-  //board2[0] = SIR::State::Inf;
-  //CHECK(board2(0, 0) == SIR::State::Inf);
+  board2(1, 5) = SIR::State::Inf;
+  CHECK(board2(1, 5) == SIR::State::Inf);
   
   SIR::Points point;
 
-  board2(1, 2) = SIR::State::Inf;
   point = SIR::count(board2);
 
   while (point.sus != 0)

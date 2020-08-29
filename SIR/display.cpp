@@ -124,7 +124,6 @@ int SIR::Display::draw(SIR::Board const& board)
 			}
 		}
 	}
-	
 	m_window.display();
 	return 0;
 }

@@ -19,7 +19,6 @@ int main()
   {
     std::cout << '\n' << "Press S to start the simulation or C to choose your parameters: ";
     std::cin >> first_choose;
-    std::cout << '\n';
     first_choose = toupper(first_choose);
     switch (first_choose)
     {
