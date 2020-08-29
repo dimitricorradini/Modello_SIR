@@ -25,7 +25,8 @@ int main()
 
     switch (first_choose)
     {
-    case ('s' , 'S'):
+    case ('s'):
+    case ('S'):
     {
       infection_rate = 0.6;
       recovery_rate = 0.4;
@@ -33,7 +34,9 @@ int main()
       std::cout << "Enjoy!" << '\n';
       std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
-    case ('c' , 'C') :
+      break;
+    case ('c'):
+    case ('C'):
     {
       std::cout << "Insert infection rate (0 to 1): ";
       std::cin >> infection_rate;
