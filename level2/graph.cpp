@@ -50,7 +50,7 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points>& g_points)
 	pop_line1.setFillColor(sf::Color::Black);
 
 	lineS.setPosition(widthG-226,38);
-	lineR.setPosition(widthG-154,38);
+	lineR.setPosition(widthG-145,38);
 	lineI.setPosition(widthG-72,38);
 	lineD.setPosition(widthG-298,38);
 	lineS.setFillColor(sf::Color::Blue);
@@ -73,7 +73,7 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points>& g_points)
 
 	x_arrow.setPosition(widthG-11,heightG-55);
 	x_arrow.setFillColor(sf::Color::Black);
-    x_arrow.setRotation(30);
+  x_arrow.setRotation(30);
 
 	x_arrow1.setFillColor(sf::Color::Black);
 	x_arrow1.setPosition(widthG-11,heightG-45);
@@ -131,7 +131,7 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points>& g_points)
 	rec.setStyle(sf::Text::Regular);
 	rec.setCharacterSize(13);
 	rec.setFillColor(sf::Color::Green);
-	rec.setPosition(widthG-154,20);
+	rec.setPosition(widthG-145,20);
 
 	inf.setStyle(sf::Text::Regular);
 	inf.setCharacterSize(13);

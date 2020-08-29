@@ -29,6 +29,7 @@ TEST_CASE("Testing board")
   SIR::Points point;
 
   board2(1, 2) = SIR::State::Inf;
+  point = SIR::count(board2);
 
   while (point.sus != 0)
   {
@@ -57,7 +58,7 @@ TEST_CASE("Testing board")
   {
     for (int j = 0; j < board2.side(); j++)
     {
-      board2(i, j) = SIR::State::Susc;
+      board2(i, j) = SIR::State::Inf;
     }
   }
   
@@ -78,6 +79,7 @@ TEST_CASE("Testing board")
   }
 
   board2(0, 5) = SIR::State::Inf;
+  point = SIR::count(board2);
 
   while (point.inf != 0)
   {
@@ -97,6 +99,7 @@ TEST_CASE("Testing board")
   }
 
   board2(3, 7) = SIR::State::Inf;
+  point = SIR::count(board2);
 
   while (point.inf != 0)
   {

@@ -23,7 +23,7 @@ TEST_CASE("Testing points")
   CHECK(point_convert.inf == 650);
   CHECK(point_convert.rec == 650);
   CHECK(point_convert.dead == 650);
-  CHECK(point_convert.sus == 30);
+  CHECK(point_convert.sus == 50);
 
 
 	for (int i = 0; i < board.side(); i++)
@@ -43,7 +43,7 @@ TEST_CASE("Testing points")
 
   point_convert = SIR::convert(board, point);
 
-  CHECK(point_convert.inf == 30);
+  CHECK(point_convert.inf == 50);
   CHECK(point_convert.rec == 650);
   CHECK(point_convert.dead == 650);
   CHECK(point_convert.sus == 650);
@@ -73,7 +73,7 @@ TEST_CASE("Testing points")
   point_convert = SIR::convert(board, point);
 
   CHECK(point_convert.inf == 650);
-  CHECK(point_convert.rec == 340);
-  CHECK(point_convert.dead == 340);
+  CHECK(point_convert.rec == 350);
+  CHECK(point_convert.dead == 350);
   CHECK(point_convert.sus == 650);
 }
