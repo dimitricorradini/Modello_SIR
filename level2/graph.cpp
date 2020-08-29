@@ -73,7 +73,7 @@ int SIR::Graph::draw(SIR::Board const& board, std::vector<Points>& g_points)
 
 	x_arrow.setPosition(widthG-11,heightG-55);
 	x_arrow.setFillColor(sf::Color::Black);
-  x_arrow.setRotation(30);
+    x_arrow.setRotation(30);
 
 	x_arrow1.setFillColor(sf::Color::Black);
 	x_arrow1.setPosition(widthG-11,heightG-45);

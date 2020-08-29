@@ -45,7 +45,7 @@ SIR::Points SIR::convert(SIR::Board const& board, Points const& point)
 	p_graph.dead = 0;
 
 	double const d = board.side() * board.side();
-	double const x = (heightG - 80) / d;
+	double const x = (heightG - 100) / d;
 
 	p_graph.sus = heightG - 50 - round(point.sus*x);
 	p_graph.rec = heightG - 50 - round(point.rec*x);
