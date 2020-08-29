@@ -18,7 +18,7 @@ int main()
   std::cin >> dim;
   std::cout << "Press S to start the simulation or C to choose your parameters :";
   std::cin >> first_choose;
-  while(first_choose != 'S' || first_choose != 's'|| first_choose != 'C' || first_choose != 'c')
+  while(first_choose != 'S' && first_choose != 's')
   {
     std::cout << "Press S to start the simulation or C to choose your parameters :";
     std::cin >> first_choose;
@@ -44,7 +44,6 @@ int main()
       std::cin >> recovery_rate;
       std::cout << "Insert mortality (0 to 1): ";
       std::cin >> mortality;
-      std::cout << "Enjoy!" << '\n';
       std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
       break;
