@@ -100,7 +100,7 @@ void SIR::Display::click(SIR::Board &board)
 	sf::Vector2i mouse;
 	sf::Event click;
 	m_window.waitEvent(click);
-	while (click.key.code != sf::Keyboard::S)
+	while (click.type == sf::Event::MouseMoved || click.key.code != sf::Keyboard::S)
 	{
 		m_window.waitEvent(click);
 		if (click.type == sf::Event::MouseButtonPressed)
