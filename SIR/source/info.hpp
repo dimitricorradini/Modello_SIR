@@ -3,27 +3,24 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace SIR 
-{
-	class Info
-	{
-	private:
-		sf::RenderWindow info_window;
+namespace SIR {
+class Info {
+private:
+  sf::RenderWindow info_window;
 
-		static constexpr int info_window_side = 700;
+  static constexpr int info_window_side = 700;
 
-	  static constexpr auto info_window_title = "Instructions";
+  static constexpr auto info_window_title = "Instructions";
 
-	public:
-		Info() : info_window {
-								sf::VideoMode(info_window_side, info_window_side), 
-								info_window_title, 
-								sf::Style::Titlebar} {}
+public:
+  Info()
+      : info_window{sf::VideoMode(info_window_side, info_window_side),
+                    info_window_title, sf::Style::Titlebar} {}
 
-		void closing();
+  void closing();
 
-		void show_instructions();
-	};
-}
+  void show_instructions();
+};
+} // namespace SIR
 
 #endif
