@@ -1,23 +1,22 @@
 #include "doctest.h"
 
-#include "../source/points.hpp"
 #include "../source/board.hpp"
+#include "../source/points.hpp"
 
-TEST_CASE("Testing points")
-{
-	
-	SIR::Board board(50);
-	SIR::Points point;
+TEST_CASE("Testing points") {
 
-	point = SIR::count(board);
-	int tot = board.side()*board.side();
+  SIR::Board board(50);
+  SIR::Points point;
 
-	CHECK(point.inf == 0);
-	CHECK(point.rec == 0);
-	CHECK(point.dead == 0);
-	CHECK(point.sus == tot);
+  point = SIR::count(board);
+  int tot = board.side() * board.side();
 
-	SIR::Points point_convert;
+  CHECK(point.inf == 0);
+  CHECK(point.rec == 0);
+  CHECK(point.dead == 0);
+  CHECK(point.sus == tot);
+
+  SIR::Points point_convert;
   point_convert = SIR::convert(board, point);
 
   CHECK(point_convert.inf == 650);
@@ -25,15 +24,12 @@ TEST_CASE("Testing points")
   CHECK(point_convert.dead == 650);
   CHECK(point_convert.sus == 50);
 
-
-	for (int i = 0; i < board.side(); i++)
-  {
-    for (int j = 0; j < board.side(); j++)
-    {
+  for (int i = 0; i < board.side(); i++) {
+    for (int j = 0; j < board.side(); j++) {
       board(i, j) = SIR::State::Inf;
     }
   }
-  
+
   point = SIR::count(board);
 
   CHECK(point.inf == tot);
@@ -48,17 +44,12 @@ TEST_CASE("Testing points")
   CHECK(point_convert.dead == 650);
   CHECK(point_convert.sus == 650);
 
-  for (int i = 0; i < board.side(); i++)
-  {
-    for (int j = 0; j < board.side(); j++)
-    {
-      if (i % 2 == 0)
-      {
-        board(i,j) = SIR::State::Rec;
-      }
-      else
-      {
-        board(i,j) = SIR::State::Dead;
+  for (int i = 0; i < board.side(); i++) {
+    for (int j = 0; j < board.side(); j++) {
+      if (i % 2 == 0) {
+        board(i, j) = SIR::State::Rec;
+      } else {
+        board(i, j) = SIR::State::Dead;
       }
     }
   }
