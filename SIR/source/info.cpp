@@ -1,4 +1,3 @@
-#include <iostream>
 #include "info.hpp"
 
 void SIR::Info::closing()
