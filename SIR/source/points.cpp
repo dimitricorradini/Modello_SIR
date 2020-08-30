@@ -1,7 +1,6 @@
 #include "points.hpp"
 #include "board.hpp"
 #include <cmath>
-#include <vector>
 
 SIR::Points SIR::count(SIR::Board const &board) {
   Points p;
