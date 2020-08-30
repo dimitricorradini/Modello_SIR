@@ -1,5 +1,4 @@
 #include "board.hpp"
-#include <iostream>
 #include <random>
 
 SIR::Board SIR::evolve(SIR::Board const &current, double const beta,
