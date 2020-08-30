@@ -1,7 +1,7 @@
 #include "doctest.h"
 
-#include "board.hpp"
-#include "points.hpp"
+#include "../source/board.hpp"
+#include "../source/points.hpp"
 
 TEST_CASE("Testing board")
 {

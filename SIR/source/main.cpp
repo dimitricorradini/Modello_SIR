@@ -33,6 +33,7 @@ int main()
         break;
       case ('C'):
       {
+        std::cout << '\n';
         std::cout << "Insert infection rate (0 to 1): ";
         std::cin >> infection_rate;
         std::cout << "Insert recovery rate (0 to 1): ";
@@ -46,7 +47,7 @@ int main()
     
       default:
       {
-        std::cout << "Please type C or S!" << '\n';
+        std::cout << '\n' << "Please type C or S!" << '\n';
       }
         break;
     }
@@ -60,6 +61,7 @@ int main()
   SIR::Display display(dim);
   display.draw(board);
   display.click(board);
+  display.draw(board);
 
   SIR::Points p = SIR::count(board);
 
