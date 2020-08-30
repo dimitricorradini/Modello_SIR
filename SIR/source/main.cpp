@@ -54,7 +54,6 @@ int main() {
   SIR::Display display(dim);
   display.draw(board);
   display.click(board);
-  display.draw(board);
 
   SIR::Points p = SIR::count(board);
 

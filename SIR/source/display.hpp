@@ -22,8 +22,6 @@ public:
                                                     m_board_side * cell_side),
                                       s_window_title, sf::Style::Titlebar} {}
 
-  void wait_key_pressed();
-
   void closing();
 
   void click(Board &board);

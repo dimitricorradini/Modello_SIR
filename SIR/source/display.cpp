@@ -1,16 +1,6 @@
 #include "display.hpp"
 #include "board.hpp"
 
-void SIR::Display::wait_key_pressed() {
-  sf::Event wait_key;
-  m_window.waitEvent(wait_key);
-  while (wait_key.type != sf::Event::KeyPressed) {
-    if (wait_key.key.code != sf::Keyboard::Escape) {
-      m_window.waitEvent(wait_key);
-    }
-  }
-}
-
 void SIR::Display::closing() {
   sf::Event close2;
   m_window.waitEvent(close2);
