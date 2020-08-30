@@ -63,7 +63,7 @@ void SIR::Info::show_instructions()
 			info_window.clear(sf::Color::Black);
 			info_window.clear(sf::Color::Black);
 			quest.setFillColor(sf::Color::Black);
-			quest.setString("1) Choose!\n\nStart your pandemic by clicking\non the cells you want to infect\nwith the left mouse button.\nClick with the right mouse button\nto undo your choice.\n\n\n2) Simulation!\n\nPress S to start the simulation,\nthen press Q to close simulation window\nwhen the evolution halts.\n\n\n3) Trend!\n\nAfter closing the simulation window with Q,\nthe graph of the trend will be displayed.\nClose the Trend window to quit.");
+			quest.setString("1) Choose!\n\nStart your pandemic by clicking\non the cells you want to infect\nwith the left mouse button.\nClick again to undo your choice.\n\n\n2) Simulation!\n\nPress S to start the simulation,\nthen press Q to close simulation window\nwhen the evolution halts.\n\n\n3) Trend!\n\nAfter closing the simulation window with Q,\nthe graph of the trend will be displayed.\nClose the Trend window to quit.");
 			quest.setCharacterSize(20);
 			quest.setPosition(pos1_x+20, pos1_y+20);
 			info_window.draw(box1);
