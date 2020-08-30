@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "points.hpp"
+
 
 namespace SIR 
 {
