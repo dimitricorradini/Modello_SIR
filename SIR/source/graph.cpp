@@ -2,6 +2,7 @@
 #include <string>
 #include "graph.hpp"
 #include "board.hpp"
+#include "points.hpp"
 
 void SIR::Graph::closing()
 {
