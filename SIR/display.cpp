@@ -38,26 +38,16 @@ void SIR::Display::click(SIR::Board& board)
 						{
 							if ((j * cell_side < mouse.y) && ((j + 1) * cell_side > mouse.y))
 							{
-								board(i, j) = State::Inf;
-								draw(board);
-							}
-						}
-					}
-				}
-			}
-			if (click.mouseButton.button == sf::Mouse::Button::Right)
-			{
-				mouse = sf::Mouse::getPosition(m_window);
-				for (int i = 0; i != m_board_side; ++i)
-				{
-					if ((i * cell_side < mouse.x) && ((i + 1) * cell_side > mouse.x))
-					{
-						for (int j = 0; j != m_board_side; ++j)
-						{
-							if ((j * cell_side < mouse.y) && ((j + 1) * cell_side > mouse.y))
-							{
-								board(i, j) = State::Susc;
-								draw(board);
+								if (board(i, j) == State::Susc)
+								{
+									board(i, j) = State::Inf;
+									draw(board);
+								}
+								else
+								{
+									board(i, j) = State::Susc;
+									draw(board);
+								}
 							}
 						}
 					}
