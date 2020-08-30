@@ -1,29 +1,29 @@
 #ifndef SIR_GRAPH_HPP
 #define SIR_GRAPH_HPP
 
+#include "points.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "points.hpp"
 
-namespace SIR 
-{
-  class Board;
-  
-  class Points;
+namespace SIR {
+class Board;
 
-  class Graph
-  {
-    private:
-    sf::RenderWindow g_window;
-    static constexpr auto g_window_title = "Trend";
+class Points;
 
-    public:
-    Graph() : g_window{sf::VideoMode(widthG, heightG), g_window_title, sf::Style::Close} {}
+class Graph {
+private:
+  sf::RenderWindow g_window;
+  static constexpr auto g_window_title = "Trend";
 
-    void closing();
-  
-    int draw(Board const& board, std::vector<Points>& g_points);
-  };
-}
+public:
+  Graph()
+      : g_window{sf::VideoMode(widthG, heightG), g_window_title,
+                 sf::Style::Close} {}
+
+  void closing();
+
+  int draw(Board const &board, std::vector<Points> &g_points);
+};
+} // namespace SIR
 
 #endif
