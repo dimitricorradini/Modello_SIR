@@ -8,19 +8,22 @@
 
 int main()
 {
-  int dim;
+  int dim = 0;
   double infection_rate;
   double recovery_rate;
   double mortality;
-  char first_choose;
-  std::cout << '\n' << "Insert board dimension (1 to 50): ";
-  std::cin >> dim;
-  while(first_choose != 'S' && first_choose != 'C')
+  char choice;
+  while (dim > 50 || dim <= 0)
+  {
+    std::cout << '\n' << "Insert board dimension (1 to 50): ";
+    std::cin >> dim;
+  }
+  while(choice != 'S' && choice != 'C')
   {
     std::cout << '\n' << "Press S to start the simulation or C to choose your parameters: ";
-    std::cin >> first_choose;
-    first_choose = toupper(first_choose);
-    switch (first_choose)
+    std::cin >> choice;
+    choice = toupper(choice);
+    switch (choice)
     {
       case ('S'):
       {
