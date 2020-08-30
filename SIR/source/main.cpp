@@ -13,7 +13,7 @@ int main()
   double recovery_rate;
   double mortality;
   char choice;
-  while (dim > 50 || dim <= 0)
+  while (dim > 50 || dim < 1)
   {
     std::cout << '\n' << "Insert board dimension (1 to 50): ";
     std::cin >> dim;
