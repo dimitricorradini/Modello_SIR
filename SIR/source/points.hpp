@@ -4,8 +4,8 @@
 namespace SIR {
 class Board;
 
-static constexpr int heightG = 700;
-static constexpr int widthG = 700;
+constexpr int heightG = 700;
+constexpr int widthG = 700;
 
 struct Points {
   int sus;
