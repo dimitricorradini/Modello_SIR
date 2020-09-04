@@ -1,7 +1,6 @@
 #ifndef SIR_GRAPH_HPP
 #define SIR_GRAPH_HPP
 
-#include "points.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
