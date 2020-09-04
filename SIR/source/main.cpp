@@ -2,7 +2,6 @@
 #include "display.hpp"
 #include "graph.hpp"
 #include "info.hpp"
-#include "points.hpp"
 #include <chrono>
 #include <thread>
 
