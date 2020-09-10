@@ -4,8 +4,6 @@
 #include "../source/points.hpp"
 
 TEST_CASE("Testing board") {
-  CHECK_THROWS(SIR::Board(0));
-  CHECK_THROWS(SIR::Board(-30));
 
   SIR::Board const board1(50);
   SIR::Board board2(40);
@@ -43,9 +41,6 @@ TEST_CASE("Testing board") {
   CHECK(point.rec == tot2);
   CHECK(point.dead == 0);
   CHECK(point.sus == 0);
-
-  CHECK_THROWS(SIR::evolve(board2, 2, 0, 0));
-  CHECK_THROWS(SIR::evolve(board2, 0, 1.1, 0));
 
   for (int i = 0; i < board2.side(); i++) {
     for (int j = 0; j < board2.side(); j++) {

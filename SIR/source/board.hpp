@@ -2,7 +2,6 @@
 #define SIR_BOARD_HPP
 
 #include <cassert>
-#include <iostream>
 #include <vector>
 
 namespace SIR {
@@ -15,12 +14,7 @@ private:
 
 public:
   Board(int side) : m_side(side), m_board(side * side) {
-    if (side <= 0) {
-      throw std::runtime_error{"There is no population"};
-    }
-    if (side > 50) {
-      throw std::runtime_error{"Too big to fit on the screen"};
-    }
+    assert(side > 0 && side <= 50);
   }
 
   State operator()(int i, int j) const {

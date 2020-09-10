@@ -8,10 +8,10 @@ constexpr int heightG = 700;
 constexpr int widthG = 700;
 
 struct Points {
-  int sus;
-  int rec;
-  int inf;
-  int dead;
+  int sus = 0;
+  int rec = 0;
+  int inf = 0;
+  int dead = 0;
 };
 
 Points count(Board const &board);

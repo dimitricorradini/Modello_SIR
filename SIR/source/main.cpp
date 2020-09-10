@@ -4,6 +4,7 @@
 #include "info.hpp"
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 int main() {
   int dim = 0;
@@ -11,14 +12,18 @@ int main() {
   double recovery_rate;
   double mortality;
   char choice;
-  while (dim > 50 || dim < 1) {
+  std::cout << '\n' << "Insert board dimension (1 to 50): ";
+  std::cin >> dim;
+  while (dim > 50 || dim < 1 || !std::cin) {
+    std::cin.clear();
+    while (std::cin.get() != '\n') {
+      continue;
+    }
     std::cout << '\n' << "Insert board dimension (1 to 50): ";
     std::cin >> dim;
   }
   while (choice != 'S' && choice != 'C') {
-    std::cout
-        << '\n'
-        << "Press S to start the simulation or C to choose your parameters: ";
+    std::cout << '\n' << "Press S to start the simulation or C to choose your parameters: ";
     std::cin >> choice;
     choice = toupper(choice);
     switch (choice) {
@@ -31,12 +36,36 @@ int main() {
     } break;
     case ('C'): {
       std::cout << '\n';
-      std::cout << "Insert infection rate (0 to 1): ";
+      std::cout << '\n' << "Insert infection rate (0 to 1): ";
       std::cin >> infection_rate;
-      std::cout << "Insert recovery rate (0 to 1): ";
+      while (infection_rate > 1 || infection_rate < 0 || !std::cin) {
+        std::cin.clear();
+        while (std::cin.get() != '\n') {
+          continue;
+        }
+        std::cout << '\n' << "Insert infection rate (0 to 1): ";
+        std::cin >> infection_rate;
+      }
+      std::cout << '\n' << "Insert recovery rate (0 to 1): ";
       std::cin >> recovery_rate;
-      std::cout << "Insert mortality (0 to 1): ";
+      while (recovery_rate > 1 || recovery_rate < 0 || !std::cin) {
+        std::cin.clear();
+        while (std::cin.get() != '\n') {
+          continue;
+        }
+        std::cout << '\n' << "Insert recovery rate (0 to 1): ";
+        std::cin >> recovery_rate;
+      }
+      std::cout << '\n' << "Insert mortality (0 to 1): ";
       std::cin >> mortality;
+      while (mortality > 1 || mortality < 0 || !std::cin) {
+        std::cin.clear();
+        while (std::cin.get() != '\n') {
+          continue;
+        }
+        std::cout << '\n' << "Insert mortality (0 to 1): ";
+        std::cin >> mortality;
+      }
       std::cout << '\n' << "Enjoy!" << '\n';
       std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     } break;

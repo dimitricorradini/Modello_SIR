@@ -45,7 +45,7 @@ void SIR::Display::click(SIR::Board &board) {
 }
 
 int SIR::Display::draw(SIR::Board const &board) {
-  const sf::Vector2f cell_vector = sf::Vector2f(cell_side, cell_side);
+  const sf::Vector2f cell_vector{cell_side, cell_side};
 
   sf::RectangleShape cell(cell_vector);
   sf::RectangleShape cell1(cell_vector);

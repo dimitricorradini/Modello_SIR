@@ -1,12 +1,8 @@
 #include "board.hpp"
 #include <random>
 
-SIR::Board SIR::evolve(SIR::Board const &current, double const beta,
-                       double const gamma, double const mu) {
-  if (beta > 1 || gamma > 1 || mu > 1 || beta < 0 || gamma < 0 || mu < 0) {
-    throw std::runtime_error{
-        "The coefficients beta, gamma and mu must be between 0 and 1."};
-  }
+SIR::Board SIR::evolve(SIR::Board const &current, double const beta, double const gamma, double const mu) {
+  assert(beta <= 1 && gamma <= 1 && mu <= 1 && beta >= 0 && gamma >= 0 && mu >= 0);
 
   int n = current.side();
   Board next(n);
