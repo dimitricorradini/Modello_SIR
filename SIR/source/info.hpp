@@ -14,7 +14,7 @@ private:
 
 public:
   Info()
-      : info_window{sf::VideoMode(info_window_side, info_window_side),
+      : info_window{sf::VideoMode(sf::Vector2<unsigned>(info_window_side, info_window_side)),
                     info_window_title, sf::Style::Titlebar} {}
 
   void closing();

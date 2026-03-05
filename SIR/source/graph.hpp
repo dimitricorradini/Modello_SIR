@@ -17,7 +17,7 @@ private:
 
 public:
   Graph()
-      : g_window{sf::VideoMode(widthG, heightG), g_window_title,
+      : g_window{sf::VideoMode(sf::Vector2<unsigned>(widthG, heightG)), g_window_title,
                  sf::Style::Close} {}
 
   void closing();

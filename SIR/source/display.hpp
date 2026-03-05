@@ -18,8 +18,8 @@ private:
 public:
   Display(int board_side)
       : m_board_side{board_side}, m_window{
-                                      sf::VideoMode(m_board_side * cell_side,
-                                                    m_board_side * cell_side),
+                                      sf::VideoMode(sf::Vector2<unsigned>(m_board_side * cell_side,
+                                                    m_board_side * cell_side)),
                                       s_window_title, sf::Style::Titlebar} {}
 
   void closing();

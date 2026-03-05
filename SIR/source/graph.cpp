@@ -4,12 +4,12 @@
 #include <string>
 
 void SIR::Graph::closing() {
-  sf::Event close3;
-  g_window.waitEvent(close3);
-  while (close3.type != sf::Event::Closed) {
-    g_window.waitEvent(close3);
-    if (close3.type == sf::Event::Closed) {
+  while (true) {
+    std::optional<sf::Event> close3 = g_window.waitEvent();
+    if (!close3) continue;
+    if (close3->is<sf::Event::Closed>()) {
       g_window.close();
+      break;
     }
   }
 }
@@ -45,94 +45,94 @@ int SIR::Graph::draw(SIR::Board const &board, std::vector<Points> &g_points) {
   pop_line.setFillColor(sf::Color::Black);
   pop_line1.setFillColor(sf::Color::Black);
 
-  lineS.setPosition(widthG - 226, 38);
-  lineR.setPosition(widthG - 145, 38);
-  lineI.setPosition(widthG - 72, 38);
-  lineD.setPosition(widthG - 298, 38);
+  lineS.setPosition(sf::Vector2f(widthG - 226, 38));
+  lineR.setPosition(sf::Vector2f(widthG - 145, 38));
+  lineI.setPosition(sf::Vector2f(widthG - 72, 38));
+  lineD.setPosition(sf::Vector2f(widthG - 298, 38));
   lineS.setFillColor(sf::Color::Blue);
   lineR.setFillColor(sf::Color::Green);
   lineI.setFillColor(sf::Color::Red);
   lineD.setFillColor(sf::Color::Black);
 
-  legend.setPosition(widthG - legend_box.x - 2, 2);
+  legend.setPosition(sf::Vector2f(widthG - legend_box.x - 2, 2));
   legend.setFillColor(sf::Color::White);
   legend.setOutlineThickness(2);
   legend.setOutlineColor(sf::Color::Black);
 
-  y_arrow.setPosition(50, 50);
+  y_arrow.setPosition(sf::Vector2f(50, 50));
   y_arrow.setFillColor(sf::Color::Black);
-  y_arrow.setRotation(30);
+  y_arrow.setRotation(sf::degrees(30));
 
-  y_arrow1.setPosition(50, 50);
-  y_arrow1.setRotation(-30);
+  y_arrow1.setPosition(sf::Vector2f(50, 50));
+  y_arrow1.setRotation(sf::degrees(-30));
   y_arrow1.setFillColor(sf::Color::Black);
 
-  x_arrow.setPosition(widthG - 11, heightG - 55);
+  x_arrow.setPosition(sf::Vector2f(widthG - 11, heightG - 55));
   x_arrow.setFillColor(sf::Color::Black);
-  x_arrow.setRotation(30);
+  x_arrow.setRotation(sf::degrees(30));
 
   x_arrow1.setFillColor(sf::Color::Black);
-  x_arrow1.setPosition(widthG - 11, heightG - 45);
-  x_arrow1.setRotation(-30);
+  x_arrow1.setPosition(sf::Vector2f(widthG - 11, heightG - 45));
+  x_arrow1.setRotation(sf::degrees(-30));
 
-  Xaxis.setPosition(50, heightG - 50);
+  Xaxis.setPosition(sf::Vector2f(50, heightG - 50));
   Xaxis.setFillColor(sf::Color::Black);
-  Yaxis.setPosition(50, 50);
+  Yaxis.setPosition(sf::Vector2f(50, 50));
   Yaxis.setFillColor(sf::Color::Black);
 
   g_window.clear(sf::Color::White);
 
   sf::Font font;
-  font.loadFromFile("../utilities/arial.ttf");
+  font.openFromFile("../utilities/arial.ttf");
 
-  sf::Text Xaxis_name("Days", font);
-  sf::Text Yaxis_name("Population", font);
+  sf::Text Xaxis_name(font, "Days");
+  sf::Text Yaxis_name(font, "Population");
 
   std::string n_day;
   std::string pop_s;
 
-  sf::Text pop(pop_s, font);
-  sf::Text sus("Susceptible", font);
-  sf::Text rec("Recovered", font);
-  sf::Text inf("Infected", font);
-  sf::Text dead("Deceased", font);
-  sf::Text text(n_day, font);
-  sf::Text leg("Legend:", font);
+  sf::Text pop(font, pop_s);
+  sf::Text sus(font, "Susceptible");
+  sf::Text rec(font, "Recovered");
+  sf::Text inf(font, "Infected");
+  sf::Text dead(font, "Deceased");
+  sf::Text text(font, n_day);
+  sf::Text leg(font, "Legend:");
 
   Xaxis_name.setStyle(sf::Text::Bold);
-  Xaxis_name.setPosition(widthG - 45, heightG - 25);
+  Xaxis_name.setPosition(sf::Vector2f(widthG - 45, heightG - 25));
   Xaxis_name.setCharacterSize(15);
   Xaxis_name.setFillColor(sf::Color::Black);
 
   Yaxis_name.setStyle(sf::Text::Bold);
-  Yaxis_name.setPosition(10, 30);
+  Yaxis_name.setPosition(sf::Vector2f(10, 30));
   Yaxis_name.setCharacterSize(15);
   Yaxis_name.setFillColor(sf::Color::Black);
 
   leg.setStyle(sf::Text::Bold);
-  leg.setPosition(widthG - 306, 3);
+  leg.setPosition(sf::Vector2f(widthG - 306, 3));
   leg.setCharacterSize(15);
   leg.setFillColor(sf::Color::Black);
 
   dead.setStyle(sf::Text::Regular);
   dead.setCharacterSize(13);
   dead.setFillColor(sf::Color::Black);
-  dead.setPosition(widthG - 298, 20);
+  dead.setPosition(sf::Vector2f(widthG - 298, 20));
 
   sus.setStyle(sf::Text::Regular);
   sus.setCharacterSize(13);
   sus.setFillColor(sf::Color::Blue);
-  sus.setPosition(widthG - 226, 20);
+  sus.setPosition(sf::Vector2f(widthG - 226, 20));
 
   rec.setStyle(sf::Text::Regular);
   rec.setCharacterSize(13);
   rec.setFillColor(sf::Color::Green);
-  rec.setPosition(widthG - 145, 20);
+  rec.setPosition(sf::Vector2f(widthG - 145, 20));
 
   inf.setStyle(sf::Text::Regular);
   inf.setCharacterSize(13);
   inf.setFillColor(sf::Color::Red);
-  inf.setPosition(widthG - 72, 20);
+  inf.setPosition(sf::Vector2f(widthG - 72, 20));
 
   pop.setStyle(sf::Text::Bold);
   pop.setCharacterSize(10);
@@ -145,10 +145,10 @@ int SIR::Graph::draw(SIR::Board const &board, std::vector<Points> &g_points) {
   std::vector<int> v_text;
   std::vector<int> v_pop;
 
-  sf::VertexArray curveS(sf::TriangleStrip, 2 * g_points.size());
-  sf::VertexArray curveR(sf::TriangleStrip, 2 * g_points.size());
-  sf::VertexArray curveI(sf::TriangleStrip, 2 * g_points.size());
-  sf::VertexArray curveD(sf::TriangleStrip, 2 * g_points.size());
+  sf::VertexArray curveS(sf::PrimitiveType::TriangleStrip, 2 * g_points.size());
+  sf::VertexArray curveR(sf::PrimitiveType::TriangleStrip, 2 * g_points.size());
+  sf::VertexArray curveI(sf::PrimitiveType::TriangleStrip, 2 * g_points.size());
+  sf::VertexArray curveD(sf::PrimitiveType::TriangleStrip, 2 * g_points.size());
 
   sf::CircleShape PointS(3, 50);
   sf::CircleShape PointR(3, 50);
@@ -166,25 +166,25 @@ int SIR::Graph::draw(SIR::Board const &board, std::vector<Points> &g_points) {
 
     curveS[2 * a].position = sf::Vector2f(day, point.sus);
     curveS[2 * a + 1].position = sf::Vector2f(day, point.sus + 3);
-    PointS.setPosition(day, point.sus - 2);
+    PointS.setPosition(sf::Vector2f(day, point.sus - 2));
     curveS[2 * a].color = sf::Color::Blue;
     curveS[2 * a + 1].color = sf::Color::Blue;
 
     curveR[2 * a].position = sf::Vector2f(day, point.rec);
     curveR[2 * a + 1].position = sf::Vector2f(day, point.rec + 3);
-    PointR.setPosition(day, point.rec - 2);
+    PointR.setPosition(sf::Vector2f(day, point.rec - 2));
     curveR[2 * a].color = sf::Color::Green;
     curveR[2 * a + 1].color = sf::Color::Green;
 
     curveI[2 * a].position = sf::Vector2f(day, point.inf);
     curveI[2 * a + 1].position = sf::Vector2f(day, point.inf + 3);
-    PointI.setPosition(day, point.inf - 2);
+    PointI.setPosition(sf::Vector2f(day, point.inf - 2));
     curveI[2 * a].color = sf::Color::Red;
     curveI[2 * a + 1].color = sf::Color::Red;
 
     curveD[2 * a].position = sf::Vector2f(day, point.dead);
     curveD[2 * a + 1].position = sf::Vector2f(day, point.dead + 3);
-    PointD.setPosition(day, point.dead - 2);
+    PointD.setPosition(sf::Vector2f(day, point.dead - 2));
     curveD[2 * a].color = sf::Color::Black;
     curveD[2 * a + 1].color = sf::Color::Black;
 
@@ -201,8 +201,7 @@ int SIR::Graph::draw(SIR::Board const &board, std::vector<Points> &g_points) {
   for (unsigned int b = 0; b != v_text.size(); b++) {
     n_day = std::to_string(v_text[b]);
     float day1 = 50 + 5 * round(b * (widthG - 50) / g_points.size());
-    sf::Vector2f v_text(day1 + 1, heightG - 42);
-    text.setPosition(v_text);
+    text.setPosition(sf::Vector2f(day1 + 1, heightG - 42));
     text.setString(n_day);
     g_window.draw(text);
   }
@@ -220,7 +219,7 @@ int SIR::Graph::draw(SIR::Board const &board, std::vector<Points> &g_points) {
       pop_line1.setPosition(pos_pop1);
       g_window.draw(pop_line1);
       g_window.draw(pop);
-    } else if (r % 4 != 0) {
+    } else {
       pop.setString(pop_s);
       pop.setPosition(p_pop);
       pop_line.setPosition(pos_pop);
